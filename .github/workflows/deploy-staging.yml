@@ -1,0 +1,69 @@
+# Despliegue automatico a la dev store al hacer push a la rama staging.
+#
+# El destino (tienda e ID de tema) sale del entorno [environments.staging] de
+# shopify.theme.toml, de modo que el toml es la unica fuente de verdad y no hay
+# que duplicar identificadores aqui.
+#
+# Secreto necesario en el repositorio (Settings -> Secrets and variables -> Actions):
+#   SHOPIFY_CLI_THEME_TOKEN_STAGING  Token generado con la app oficial
+#                                    "Theme Access" de la dev store.
+name: Desplegar a staging
+
+on:
+  push:
+    branches: [staging]
+  workflow_dispatch:
+
+# Nunca dos despliegues simultaneos sobre el mismo tema. A diferencia de la PR,
+# aqui no se cancela el que ya esta en marcha: una subida a medias dejaria el
+# tema en un estado inconsistente.
+concurrency:
+  group: deploy-staging
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: Subir el tema a la dev store
+    runs-on: ubuntu-latest
+    environment: staging
+    steps:
+      - name: Descargar el repositorio
+        uses: actions/checkout@v4
+
+      - name: Preparar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Instalar Shopify CLI
+        run: npm install --global @shopify/cli@4
+
+      - name: Comprobar que el token esta configurado
+        env:
+          TOKEN: ${{ secrets.SHOPIFY_CLI_THEME_TOKEN_STAGING }}
+        run: |
+          if [ -z "$TOKEN" ]; then
+            echo "::error::Falta el secreto SHOPIFY_CLI_THEME_TOKEN_STAGING."
+            echo "Generalo con la app 'Theme Access' de la dev store y añadelo en"
+            echo "Settings -> Secrets and variables -> Actions."
+            exit 1
+          fi
+
+      - name: Validar el tema antes de subirlo
+        run: shopify theme check --fail-level error
+
+      - name: Subir el tema
+        env:
+          SHOPIFY_CLI_THEME_TOKEN: ${{ secrets.SHOPIFY_CLI_THEME_TOKEN_STAGING }}
+        # El tema de staging esta sin publicar, asi que no hace falta --allow-live.
+        # --json evita la salida interactiva con animaciones en el log de Actions.
+        run: |
+          set -o pipefail
+          shopify theme push --environment staging --json | tee push.log
+
+      - name: Comprobar que Shopify no rechazo ningun fichero
+        # Importante: `theme push` puede terminar con codigo de salida 0 aunque
+        # Shopify haya rechazado ficheros sueltos; en ese caso el fallo solo
+        # aparece dentro del JSON, en theme.errors. Sin esta comprobacion, un
+        # despliegue a medias se veria en verde.
+        run: node .github/scripts/verificar-push.js push.log

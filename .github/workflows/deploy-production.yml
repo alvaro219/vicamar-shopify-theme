@@ -1,0 +1,75 @@
+# Despliegue automatico a la tienda de produccion (la del cliente) al hacer
+# push a main.
+#
+# PENDIENTE DE ACTIVAR. Hasta que la tienda no se transfiera al cliente no
+# existe entorno de produccion, asi que este workflow se detiene solo, con un
+# aviso y sin marcar el push en rojo. Para activarlo hacen falta dos cosas:
+#
+#   1. Descomentar y rellenar [environments.production] en shopify.theme.toml
+#      con el handle definitivo de la tienda del cliente y el ID del tema.
+#   2. Crear el secreto SHOPIFY_CLI_THEME_TOKEN_PRODUCTION en el repositorio,
+#      con un token de la app oficial "Theme Access" concedido por el cliente.
+#      Ese token solo da permisos sobre temas: no accede a pedidos, pagos ni
+#      clientes. Es distinto del de staging y no debe reutilizarse.
+name: Desplegar a produccion
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-production
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: Subir el tema a la tienda del cliente
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - name: Descargar el repositorio
+        uses: actions/checkout@v4
+
+      - name: Comprobar si produccion ya esta configurada
+        id: guard
+        env:
+          TOKEN: ${{ secrets.SHOPIFY_CLI_THEME_TOKEN_PRODUCTION }}
+        run: |
+          if [ -z "$TOKEN" ] || ! grep -qE '^\s*\[environments\.production\]' shopify.theme.toml; then
+            echo "::notice::Produccion todavia no esta configurada; no se despliega nada."
+            echo "listo=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "listo=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Preparar Node.js
+        if: steps.guard.outputs.listo == 'true'
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Instalar Shopify CLI
+        if: steps.guard.outputs.listo == 'true'
+        run: npm install --global @shopify/cli@4
+
+      - name: Validar el tema antes de subirlo
+        if: steps.guard.outputs.listo == 'true'
+        run: shopify theme check --fail-level error
+
+      - name: Subir el tema
+        if: steps.guard.outputs.listo == 'true'
+        env:
+          SHOPIFY_CLI_THEME_TOKEN: ${{ secrets.SHOPIFY_CLI_THEME_TOKEN_PRODUCTION }}
+        # --allow-live es obligatorio: en produccion el tema destino es el
+        # publicado, y sin esta bandera el CLI se niega a sobrescribirlo.
+        run: |
+          set -o pipefail
+          shopify theme push --environment production --allow-live --json | tee push.log
+
+      - name: Comprobar que Shopify no rechazo ningun fichero
+        if: steps.guard.outputs.listo == 'true'
+        # `theme push` puede salir con codigo 0 aunque Shopify rechace ficheros
+        # sueltos. En produccion eso dejaria la tienda del cliente a medias, asi
+        # que se comprueba el JSON de forma explicita.
+        run: node .github/scripts/verificar-push.js push.log

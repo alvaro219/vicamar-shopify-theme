@@ -1,0 +1,106 @@
+# Vicamar — tema Shopify
+
+Tema Liquid para la tienda de textil de hogar Vicamar, construido sobre
+**Horizon** (tema oficial gratuito de Shopify, sucesor de Dawn) en Online
+Store 2.0.
+
+El repositorio contiene **solo el código del tema**. Los datos de la tienda
+(productos, pedidos, clientes) viven en Shopify y no se sincronizan por aquí:
+cada tienda mantiene los suyos de forma independiente.
+
+## Idioma
+
+El escaparate es **castellano por defecto**, con inglés como idioma
+secundario seleccionable. En `locales/`, el sufijo `.default` marca el idioma
+de referencia del tema, y lo lleva el español (`es.default.json`).
+
+Cualquier texto nuevo que se añada al tema debe traducirse en **ambos**
+idiomas, redactando primero el castellano.
+
+## Entornos
+
+| Entorno | Tienda | Tema | Rol |
+| --- | --- | --- | --- |
+| staging | `vicamar-dev-0x2ai1pz.myshopify.com` | `Vicamar - Staging` (#199701234047) | `unpublished` |
+| production | pendiente de transferir al cliente | pendiente | — |
+
+En la dev store existe además el tema **Horizon (#199700316543)**, que está
+publicado y se deja intacto como referencia limpia del tema base. No se
+despliega nada contra él.
+
+Los entornos se definen en [`shopify.theme.toml`](shopify.theme.toml), que es
+la única fuente de verdad: ni los workflows ni los comandos del día a día
+repiten identificadores de tienda o de tema.
+
+## Desarrollo local
+
+Requiere Node.js 20 o superior y el Shopify CLI:
+
+```bash
+npm install --global @shopify/cli
+```
+
+Trabajo diario:
+
+```bash
+# Vista previa con recarga en caliente. Crea un development theme propio y
+# efimero: no escribe ni en el tema de staging ni en el publicado.
+shopify theme dev --store vicamar-dev-0x2ai1pz.myshopify.com
+
+# Linter de Liquid. Es lo mismo que ejecuta el CI en cada Pull Request.
+shopify theme check
+
+# Subida manual al tema de staging (normalmente lo hace el CI).
+shopify theme push --environment staging
+```
+
+La dev store está protegida por contraseña, así que `theme dev` la pedirá la
+primera vez.
+
+## Ramas y despliegue
+
+- `staging` → despliega automáticamente al tema de staging de la dev store.
+- `main` → desplegará a la tienda de producción del cliente (aún inactivo).
+- Cada Pull Request a cualquiera de las dos ejecuta `theme check`.
+
+### Secretos necesarios
+
+Se configuran en *Settings → Secrets and variables → Actions*:
+
+| Secreto | Uso |
+| --- | --- |
+| `SHOPIFY_CLI_THEME_TOKEN_STAGING` | Token de la app **Theme Access** de la dev store. |
+| `SHOPIFY_CLI_THEME_TOKEN_PRODUCTION` | Token de **Theme Access** que conceda el cliente tras la transferencia. |
+
+La app oficial *Theme Access* genera tokens con permisos limitados a temas:
+no dan acceso a pedidos, pagos ni clientes. Los dos tokens son distintos y no
+deben reutilizarse entre entornos.
+
+El despliegue a producción está **desactivado por seguridad** hasta que se
+transfiera la tienda: el workflow se detiene solo, con un aviso y sin marcar
+el push en rojo, mientras falte el secreto o el bloque
+`[environments.production]` del `shopify.theme.toml`.
+
+## Notas de mantenimiento
+
+**`config/settings_data.json`** guarda toda la configuración que se hace desde
+el editor visual de Shopify. Si se toca el editor en la tienda, esos cambios
+viven solo en remoto: hay que traerlos con `shopify theme pull` antes de
+seguir trabajando en local, o se perderán en el siguiente push. Es la causa
+más común de conflictos en proyectos Shopify.
+
+**Renombrar ficheros de `locales/`** requiere dos pushes seguidos. El CLI sube
+los ficheros nuevos antes de borrar los viejos, así que durante un instante
+hay dos idiomas marcados como `.default` y Shopify rechaza la subida. El
+segundo push, ya con los antiguos borrados, entra limpio.
+
+**`shopify theme push` puede terminar con código de salida 0 aunque Shopify
+rechace ficheros sueltos**; el detalle solo aparece en el JSON de salida. Por
+eso los workflows de despliegue verifican ese JSON con
+[`.github/scripts/verificar-push.js`](.github/scripts/verificar-push.js) en
+lugar de fiarse del código de salida.
+
+## Fuera de alcance
+
+Sin Hydrogen ni headless, sin app custom con Admin API, y sin personalización
+profunda del checkout (requeriría Shopify Plus).

@@ -1,0 +1,36 @@
+# Linter de Liquid en cada Pull Request, antes de mergear a staging o main.
+# No necesita secretos: theme check analiza el codigo del repositorio en local,
+# sin conectarse a ninguna tienda.
+name: Theme Check
+
+on:
+  pull_request:
+    branches: [main, staging]
+  workflow_dispatch:
+
+# Si se empujan varios commits seguidos a la misma PR, cancela las ejecuciones
+# anteriores y deja solo la ultima.
+concurrency:
+  group: theme-check-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  theme-check:
+    name: Analisis estatico del tema
+    runs-on: ubuntu-latest
+    steps:
+      - name: Descargar el repositorio
+        uses: actions/checkout@v4
+
+      - name: Preparar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Instalar Shopify CLI
+        run: npm install --global @shopify/cli@4
+
+      - name: Ejecutar theme check
+        # --fail-level error hace que solo los errores tumben la PR; los avisos
+        # se muestran en el log pero no bloquean el merge.
+        run: shopify theme check --fail-level error
