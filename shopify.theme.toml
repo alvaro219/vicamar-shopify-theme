@@ -1,0 +1,14 @@
+# Entornos de despliegue del tema Vicamar (Horizon).
+# Uso: shopify theme push -e staging  /  shopify theme dev -e staging
+# Listar temas: shopify theme list --store vicamar-dev-0x2ai1pz.myshopify.com
+
+[environments.staging]
+store = "vicamar-dev-0x2ai1pz.myshopify.com"
+theme = "199700316543" # Horizon (live en la dev store)
+
+# Produccion: pendiente hasta comprar el dominio y transferir la tienda al cliente.
+# Tras la transferencia, el acceso se hara con un token de la app oficial "Theme Access"
+# guardado como secret de GitHub, distinto del usado para la dev store.
+# [environments.production]
+# store = "TIENDA-CLIENTE.myshopify.com"
+# theme = "ID_TEMA_PRODUCCION"

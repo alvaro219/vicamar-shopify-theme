@@ -1,0 +1,17 @@
+# Shopify CLI
+.shopify/
+*.log
+
+# Dependencias
+node_modules/
+
+# Entorno / credenciales
+.env
+.env.*
+!.env.example
+
+# Sistema operativo / editores
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
