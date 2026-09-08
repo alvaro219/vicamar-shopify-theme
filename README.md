@@ -81,6 +81,27 @@ transfiera la tienda: el workflow se detiene solo, con un aviso y sin marcar
 el push en rojo, mientras falte el secreto o el bloque
 `[environments.production]` del `shopify.theme.toml`.
 
+## Catálogo de prueba
+
+La carpeta [`dev/`](dev/) contiene datos de desarrollo, **no** código del tema
+(está excluida en `.shopifyignore`, así que nunca se sube a Shopify).
+
+`dev/generar-catalogo-prueba.js` genera `dev/catalogo-prueba.csv`: 8 productos
+y 84 variantes de textil de hogar —sábanas, fundas nórdicas, rellenos,
+almohadas y protectores— con tamaños de cama españoles (90/105/135/150/180) y
+opciones de color, material, gramaje y firmeza.
+
+```bash
+node dev/generar-catalogo-prueba.js
+```
+
+Se importa en *Productos → Importar*. Sirve para construir y probar la ficha
+de producto y el listado de colección con variantes reales.
+
+> **No es el catálogo de Vicamar.** Los productos, descripciones y precios son
+> inventados y orientativos. Antes del lanzamiento hay que borrarlos y cargar
+> el catálogo real del cliente.
+
 ## Notas de mantenimiento
 
 **`config/settings_data.json`** guarda toda la configuración que se hace desde

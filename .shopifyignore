@@ -1,0 +1,7 @@
+# Ficheros del repositorio que no forman parte del tema y no deben subirse a
+# Shopify. El CLI ya ignora lo que esta fuera de las carpetas conocidas del
+# tema, pero se declara de forma explicita para que quede documentado.
+dev/*
+.github/*
+README.md
+.gitattributes
