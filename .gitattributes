@@ -13,6 +13,11 @@
 *.md      text eol=lf
 *.toml    text eol=lf
 
+# Los CSV se generan con CRLF, como manda el RFC 4180 para este formato.
+# Sin esta excepcion la normalizacion a LF haria que el fichero apareciera
+# como modificado cada vez que se regenera.
+*.csv     text eol=crlf
+
 # Binarios, por si mas adelante se anaden imagenes o fuentes al tema
 *.png  binary
 *.jpg  binary
