@@ -1,0 +1,29 @@
+# Normaliza los finales de linea a LF en el repositorio.
+# El tema se descarga de Shopify con LF; sin esto, Windows introduce CRLF
+# en el working copy y genera diffs de fichero completo al hacer push/pull.
+* text=auto eol=lf
+
+# Ficheros del tema (todo texto en Horizon: no hay binarios en assets/)
+*.liquid  text eol=lf
+*.json    text eol=lf
+*.js      text eol=lf
+*.ts      text eol=lf
+*.css     text eol=lf
+*.svg     text eol=lf
+*.md      text eol=lf
+*.toml    text eol=lf
+
+# Binarios, por si mas adelante se anaden imagenes o fuentes al tema
+*.png  binary
+*.jpg  binary
+*.jpeg binary
+*.gif  binary
+*.webp binary
+*.ico  binary
+*.woff  binary
+*.woff2 binary
+*.eot   binary
+*.ttf   binary
+*.otf   binary
+*.mp4   binary
+*.pdf   binary
