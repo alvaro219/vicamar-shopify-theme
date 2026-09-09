@@ -359,5 +359,24 @@
       "success_moderated": "Comentario publicado y a la espera de moderación",
       "success": "Comentario publicado"
     }
+  },
+  "vicamar": {
+    "guia_medidas": {
+      "titulo": "Guía de medidas",
+      "abrir": "Guía de medidas",
+      "encabezado_cama": "Tamaño de cama",
+      "col_bajera": "Sábana bajera",
+      "col_encimera": "Sábana encimera",
+      "col_funda_almohada": "Funda de almohada",
+      "col_funda_nordica": "Funda nórdica",
+      "col_relleno": "Relleno nórdico",
+      "col_almohada": "Almohada",
+      "col_protector": "Protector",
+      "col_alto": "Alto del faldón",
+      "unidades": "Todas las medidas en centímetros (ancho × largo).",
+      "tolerancia": "Medidas orientativas: pueden variar ±2 cm por el proceso de confección y el primer lavado.",
+      "una_unidad": "1 ud.",
+      "dos_unidades": "2 uds."
+    }
   }
 }

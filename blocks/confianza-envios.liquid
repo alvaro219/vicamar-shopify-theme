@@ -1,0 +1,286 @@
+{% comment %}
+  Bloque de confianza y envios de la ficha de producto.
+
+  Resume junto al boton de compra lo que el cliente necesita saber antes de
+  anadir al carrito: plazo de entrega, umbral de envio gratuito, plazo de
+  devolucion y medios de pago.
+
+  Son cuatro lineas independientes, cada una con icono, titulo y detalle. Una
+  linea sin titulo no se pinta, asi que se puede usar el bloque con menos de
+  cuatro.
+
+  ATENCION: los plazos e importes por defecto son PROVISIONALES. Hay que
+  sustituirlos por los reales en cuanto el cliente confirme transportista,
+  tarifas y umbral de envio gratuito (ver "Pendiente de confirmar" en el
+  README).
+{% endcomment %}
+
+{% assign block_settings = block.settings %}
+
+<ul
+  class="confianza-envios spacing-style"
+  style="{% render 'spacing-style', settings: block_settings %}"
+  {{ block.shopify_attributes }}
+>
+  {%- for i in (1..4) -%}
+    {%- liquid
+      assign clave_titulo = 'titulo_' | append: i
+      assign clave_texto = 'texto_' | append: i
+      assign clave_icono = 'icono_' | append: i
+      assign titulo = block_settings[clave_titulo]
+      assign texto = block_settings[clave_texto]
+      assign icono = block_settings[clave_icono]
+    -%}
+    {%- if titulo != blank -%}
+      <li class="confianza-envios__item">
+        {%- if icono != blank and icono != 'none' -%}
+          <svg
+            class="confianza-envios__icono icon-default"
+            aria-hidden="true"
+            focusable="false"
+            xmlns="http://www.w3.org/2000/svg"
+            width="20"
+            height="20"
+            viewBox="0 0 20 20"
+          >
+            {%- render 'icon', icon: icono -%}
+          </svg>
+        {%- endif -%}
+        <span class="confianza-envios__cuerpo">
+          <span class="confianza-envios__titulo">{{ titulo }}</span>
+          {%- if texto != blank -%}
+            <span class="confianza-envios__texto">{{ texto }}</span>
+          {%- endif -%}
+        </span>
+      </li>
+    {%- endif -%}
+  {%- endfor -%}
+</ul>
+
+{% stylesheet %}
+  .confianza-envios {
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap-sm);
+    margin: 0;
+    list-style: none;
+    padding: 0;
+  }
+
+  .confianza-envios__item {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--gap-xs);
+  }
+
+  .confianza-envios__icono {
+    flex-shrink: 0;
+    margin-block-start: 0.1em;
+  }
+
+  .confianza-envios__cuerpo {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15em;
+  }
+
+  .confianza-envios__titulo {
+    font-size: var(--font-size--sm);
+    font-weight: 600;
+  }
+
+  .confianza-envios__texto {
+    font-size: var(--font-size--xs);
+    opacity: var(--opacity-subdued-text);
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "t:names.vicamar_confianza_envios",
+  "tag": null,
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "t:info.vicamar_confianza_provisional"
+    },
+    {
+      "type": "header",
+      "content": "t:content.vicamar_linea_1"
+    },
+    {
+      "type": "select",
+      "id": "icono_1",
+      "label": "t:settings.icon",
+      "options": [
+        { "value": "none", "label": "t:options.none" },
+        { "value": "truck", "label": "t:options.truck" },
+        { "value": "stopwatch", "label": "t:options.stopwatch" },
+        { "value": "price_tag", "label": "t:options.price_tag" },
+        { "value": "return", "label": "t:options.return" },
+        { "value": "lock", "label": "t:options.lock" },
+        { "value": "washing", "label": "t:options.washing" },
+        { "value": "leaf", "label": "t:options.leaf" }
+      ],
+      "default": "truck"
+    },
+    {
+      "type": "text",
+      "id": "titulo_1",
+      "label": "t:settings.heading",
+      "default": "t:text_defaults.vicamar_envio_titulo"
+    },
+    {
+      "type": "text",
+      "id": "texto_1",
+      "label": "t:settings.text",
+      "default": "t:text_defaults.vicamar_envio_texto"
+    },
+    {
+      "type": "header",
+      "content": "t:content.vicamar_linea_2"
+    },
+    {
+      "type": "select",
+      "id": "icono_2",
+      "label": "t:settings.icon",
+      "options": [
+        { "value": "none", "label": "t:options.none" },
+        { "value": "truck", "label": "t:options.truck" },
+        { "value": "stopwatch", "label": "t:options.stopwatch" },
+        { "value": "price_tag", "label": "t:options.price_tag" },
+        { "value": "return", "label": "t:options.return" },
+        { "value": "lock", "label": "t:options.lock" },
+        { "value": "washing", "label": "t:options.washing" },
+        { "value": "leaf", "label": "t:options.leaf" }
+      ],
+      "default": "price_tag"
+    },
+    {
+      "type": "text",
+      "id": "titulo_2",
+      "label": "t:settings.heading",
+      "default": "t:text_defaults.vicamar_envio_gratis_titulo"
+    },
+    {
+      "type": "text",
+      "id": "texto_2",
+      "label": "t:settings.text",
+      "default": "t:text_defaults.vicamar_envio_gratis_texto"
+    },
+    {
+      "type": "header",
+      "content": "t:content.vicamar_linea_3"
+    },
+    {
+      "type": "select",
+      "id": "icono_3",
+      "label": "t:settings.icon",
+      "options": [
+        { "value": "none", "label": "t:options.none" },
+        { "value": "truck", "label": "t:options.truck" },
+        { "value": "stopwatch", "label": "t:options.stopwatch" },
+        { "value": "price_tag", "label": "t:options.price_tag" },
+        { "value": "return", "label": "t:options.return" },
+        { "value": "lock", "label": "t:options.lock" },
+        { "value": "washing", "label": "t:options.washing" },
+        { "value": "leaf", "label": "t:options.leaf" }
+      ],
+      "default": "return"
+    },
+    {
+      "type": "text",
+      "id": "titulo_3",
+      "label": "t:settings.heading",
+      "default": "t:text_defaults.vicamar_devolucion_titulo"
+    },
+    {
+      "type": "text",
+      "id": "texto_3",
+      "label": "t:settings.text",
+      "default": "t:text_defaults.vicamar_devolucion_texto"
+    },
+    {
+      "type": "header",
+      "content": "t:content.vicamar_linea_4"
+    },
+    {
+      "type": "select",
+      "id": "icono_4",
+      "label": "t:settings.icon",
+      "options": [
+        { "value": "none", "label": "t:options.none" },
+        { "value": "truck", "label": "t:options.truck" },
+        { "value": "stopwatch", "label": "t:options.stopwatch" },
+        { "value": "price_tag", "label": "t:options.price_tag" },
+        { "value": "return", "label": "t:options.return" },
+        { "value": "lock", "label": "t:options.lock" },
+        { "value": "washing", "label": "t:options.washing" },
+        { "value": "leaf", "label": "t:options.leaf" }
+      ],
+      "default": "lock"
+    },
+    {
+      "type": "text",
+      "id": "titulo_4",
+      "label": "t:settings.heading",
+      "default": "t:text_defaults.vicamar_pago_titulo"
+    },
+    {
+      "type": "text",
+      "id": "texto_4",
+      "label": "t:settings.text",
+      "default": "t:text_defaults.vicamar_pago_texto"
+    },
+    {
+      "type": "header",
+      "content": "t:content.padding"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "t:settings.top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "t:settings.bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-inline-start",
+      "label": "t:settings.left",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-inline-end",
+      "label": "t:settings.right",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:names.vicamar_confianza_envios"
+    }
+  ]
+}
+{% endschema %}

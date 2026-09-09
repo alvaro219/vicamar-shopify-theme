@@ -1,0 +1,305 @@
+{% comment %}
+  Guia de medidas de la ficha de producto.
+
+  Pensado para colocarse junto al selector de variantes: abre un dialogo con la
+  tabla de medidas de la familia de producto (sabanas, funda nordica, relleno,
+  almohada o protector), para que el cliente sepa que corresponde a cada tamano
+  de cama antes de elegir talla.
+
+  Origen de la tabla, por orden de prioridad:
+    1. El metafield de producto `custom.guia_medidas` (rich text), si existe.
+       Es la via para catalogos reales con medidas propias del proveedor.
+    2. La tabla estandar del snippet `guia-medidas-tabla`, elegida por el ajuste
+       `tipo_tabla` o deducida del tipo de producto cuando esta en "auto".
+
+  Reutiliza el patron de dialogo de Horizon (dialog.js + dialog-styles), el
+  mismo que usa el bloque `popup-link`.
+{% endcomment %}
+
+{% liquid
+  assign block_settings = block.settings
+  assign producto = closest.product
+  assign medidas_metafield = producto.metafields.custom.guia_medidas
+
+  assign tipo = block_settings.tipo_tabla
+  if tipo == 'auto'
+    assign tipo_producto = producto.type | handleize
+    case tipo_producto
+      when 'sabanas'
+        assign tipo = 'sabanas'
+      when 'fundas-nordicas', 'funda-nordica'
+        assign tipo = 'funda_nordica'
+      when 'rellenos', 'relleno-nordico'
+        assign tipo = 'relleno'
+      when 'almohadas'
+        assign tipo = 'almohada'
+      when 'protectores', 'protector-de-colchon'
+        assign tipo = 'protector'
+      else
+        assign tipo = ''
+    endcase
+  endif
+
+  assign hay_contenido = false
+  if medidas_metafield != blank or tipo != blank
+    assign hay_contenido = true
+  endif
+%}
+
+{% if hay_contenido %}
+  <script
+    src="{{ 'dialog.js' | asset_url }}"
+    type="module"
+  ></script>
+
+  {% render 'dialog-styles' %}
+
+  <dialog-component
+    class="guia-medidas"
+    {{ block.shopify_attributes }}
+  >
+    <button
+      on:click="/showDialog"
+      class="button button-unstyled guia-medidas__disparador spacing-style {{ block_settings.type_preset }}"
+      style="{% render 'spacing-style', settings: block_settings %}"
+      type="button"
+    >
+      {%- if block_settings.mostrar_icono -%}
+        <svg
+          class="guia-medidas__icono icon-default"
+          aria-hidden="true"
+          focusable="false"
+          xmlns="http://www.w3.org/2000/svg"
+          width="18"
+          height="18"
+          viewBox="0 0 20 20"
+        >
+          {%- render 'icon', icon: 'ruler' -%}
+        </svg>
+      {%- endif -%}
+      <span>{{ block_settings.heading | default: 'vicamar.guia_medidas.abrir' | t }}</span>
+    </button>
+
+    <dialog
+      ref="dialog"
+      class="guia-medidas__dialogo dialog-modal color-custom-popover"
+      scroll-lock
+      aria-labelledby="guia-medidas-titulo-{{ block.id }}"
+    >
+      <div class="guia-medidas__interior">
+        <h2
+          id="guia-medidas-titulo-{{ block.id }}"
+          class="guia-medidas__titulo h5"
+        >
+          {{ block_settings.heading | default: 'vicamar.guia_medidas.titulo' | t }}
+        </h2>
+
+        {%- if medidas_metafield != blank -%}
+          <div class="guia-medidas__contenido rte">{{ medidas_metafield | metafield_tag }}</div>
+        {%- else -%}
+          <div class="guia-medidas__contenido">
+            {% render 'guia-medidas-tabla', tipo: tipo %}
+          </div>
+          <p class="guia-medidas__pie">{{ 'vicamar.guia_medidas.unidades' | t }}</p>
+          <p class="guia-medidas__pie">{{ 'vicamar.guia_medidas.tolerancia' | t }}</p>
+        {%- endif -%}
+
+        {%- if block_settings.nota != blank -%}
+          <div class="guia-medidas__nota rte">{{ block_settings.nota }}</div>
+        {%- endif -%}
+      </div>
+
+      <button
+        ref="closeButton"
+        on:click="/closeDialog"
+        class="button button-unstyled close-button guia-medidas__cerrar"
+        aria-label="{{ 'accessibility.close_dialog' | t }}"
+        type="button"
+      >
+        {{- 'icon-close.svg' | inline_asset_content -}}
+      </button>
+    </dialog>
+  </dialog-component>
+{% endif %}
+
+{% stylesheet %}
+  .guia-medidas__disparador {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--gap-2xs);
+    text-decoration: underline;
+    text-underline-offset: 0.25em;
+  }
+
+  .guia-medidas__icono {
+    flex-shrink: 0;
+  }
+
+  .guia-medidas__dialogo {
+    box-shadow: var(--shadow-popover);
+    border: var(--style-border-popover);
+    border-radius: var(--style-border-radius-popover);
+    background-color: var(--color-background);
+    padding: var(--padding-4xl) var(--padding-xl) var(--padding-xl);
+    width: 100%;
+    max-width: 42rem;
+    max-height: var(--modal-max-height);
+
+    @media screen and (min-width: 750px) {
+      padding: var(--padding-3xl);
+    }
+  }
+
+  .guia-medidas__dialogo[open] {
+    animation: modalSlideInTop var(--animation-speed) var(--animation-easing) forwards;
+  }
+
+  .guia-medidas__dialogo.dialog-closing {
+    animation: modalSlideOutTop var(--animation-speed) var(--animation-easing) forwards;
+  }
+
+  .guia-medidas__titulo {
+    margin: 0 0 var(--margin-md);
+  }
+
+  /* La tabla puede no caber en moviles estrechos: se desplaza en su propio
+     contenedor para que la pagina nunca haga scroll horizontal. */
+  .guia-medidas__contenido {
+    overflow-x: auto;
+  }
+
+  .guia-medidas__tabla {
+    border-collapse: collapse;
+    width: 100%;
+    min-width: 22rem;
+    text-align: left;
+    font-size: var(--font-size--sm);
+  }
+
+  .guia-medidas__tabla th,
+  .guia-medidas__tabla td {
+    border-bottom: 1px solid rgb(from currentcolor r g b / 0.15);
+    padding: var(--padding-xs) var(--padding-sm) var(--padding-xs) 0;
+    white-space: nowrap;
+  }
+
+  .guia-medidas__tabla thead th,
+  .guia-medidas__tabla tbody th {
+    font-weight: 600;
+  }
+
+  .guia-medidas__pie,
+  .guia-medidas__nota {
+    margin-block-start: var(--margin-sm);
+    font-size: var(--font-size--xs);
+    opacity: var(--opacity-subdued-text);
+  }
+
+  .guia-medidas__cerrar {
+    top: var(--margin-2xs);
+    right: var(--margin-2xs);
+    opacity: 0.8;
+    animation: none;
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "t:names.vicamar_guia_medidas",
+  "tag": null,
+  "settings": [
+    {
+      "type": "select",
+      "id": "tipo_tabla",
+      "label": "t:settings.vicamar_tipo_tabla",
+      "info": "t:info.vicamar_tipo_tabla",
+      "options": [
+        { "value": "auto", "label": "t:options.vicamar_tabla_auto" },
+        { "value": "sabanas", "label": "t:options.vicamar_tabla_sabanas" },
+        { "value": "funda_nordica", "label": "t:options.vicamar_tabla_funda_nordica" },
+        { "value": "relleno", "label": "t:options.vicamar_tabla_relleno" },
+        { "value": "almohada", "label": "t:options.vicamar_tabla_almohada" },
+        { "value": "protector", "label": "t:options.vicamar_tabla_protector" }
+      ],
+      "default": "auto"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "t:settings.text",
+      "default": "t:text_defaults.vicamar_guia_medidas"
+    },
+    {
+      "type": "checkbox",
+      "id": "mostrar_icono",
+      "label": "t:settings.vicamar_mostrar_icono",
+      "default": true
+    },
+    {
+      "type": "richtext",
+      "id": "nota",
+      "label": "t:settings.vicamar_nota_medidas"
+    },
+    {
+      "type": "select",
+      "id": "type_preset",
+      "label": "t:settings.preset",
+      "options": [
+        { "value": "", "label": "t:options.default" },
+        { "value": "paragraph", "label": "t:options.paragraph" },
+        { "value": "h6", "label": "t:options.h6" }
+      ],
+      "default": "paragraph"
+    },
+    {
+      "type": "header",
+      "content": "t:content.padding"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "t:settings.top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "t:settings.bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-inline-start",
+      "label": "t:settings.left",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-inline-end",
+      "label": "t:settings.right",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:names.vicamar_guia_medidas"
+    }
+  ]
+}
+{% endschema %}

@@ -17,6 +17,12 @@ de referencia del tema, y lo lleva el español (`es.default.json`).
 Cualquier texto nuevo que se añada al tema debe traducirse en **ambos**
 idiomas, redactando primero el castellano.
 
+El tema conserva solo los locales que la tienda va a publicar: `es.default`,
+`en` y sus `.schema`. Los otros 53 idiomas que trae Horizon se borraron,
+porque obligaban a replicar cada clave nueva en 57 ficheros para que
+`theme check` no fallara con `MatchingTranslations`. Si más adelante hiciera
+falta otro idioma, sus ficheros siguen en el commit baseline de Horizon.
+
 ## Entornos
 
 | Entorno | Tienda | Tema | Rol |
@@ -101,6 +107,37 @@ de producto y el listado de colección con variantes reales.
 > **No es el catálogo de Vicamar.** Los productos, descripciones y precios son
 > inventados y orientativos. Antes del lanzamiento hay que borrarlos y cargar
 > el catálogo real del cliente.
+
+## Ficha de producto
+
+Sobre los bloques de Horizon, `templates/product.json` monta dos bloques
+propios de este proyecto.
+
+**Guía de medidas** (`blocks/guia-medidas.liquid`) va justo debajo del selector
+de variantes y abre un diálogo con la tabla de medidas de la familia de
+producto, para que el cliente sepa qué corresponde a cada tamaño de cama antes
+de elegir talla. La tabla sale de dos sitios, por este orden:
+
+1. El metafield de producto `custom.guia_medidas` (rich text), si existe. Es la
+   vía para el catálogo real, donde cada referencia lleva las medidas de su
+   proveedor. Requiere crear la definición en *Configuración → Metafields →
+   Productos*.
+2. Las tablas estándar de `snippets/guia-medidas-tabla.liquid`, elegidas con el
+   ajuste *Tabla de medidas* o deducidas del tipo de producto cuando está en
+   «Automática» (Sábanas, Fundas nórdicas, Rellenos, Almohadas, Protectores).
+
+> Las medidas del snippet son las habituales del sector en España y **no están
+> contrastadas con el proveedor de Vicamar**. Hay que revisarlas antes del
+> lanzamiento.
+
+**Confianza y envíos** (`blocks/confianza-envios.liquid`) son cuatro líneas con
+icono bajo el botón de compra: plazo de entrega, umbral de envío gratuito,
+plazo de devolución y medios de pago. Cada línea sin título no se pinta, así
+que el bloque admite menos de cuatro.
+
+> Los plazos e importes por defecto (24-48 h, envío gratis desde 49 €) son
+> **provisionales**. Hay que sustituirlos en cuanto el cliente confirme
+> transportista, tarifas y umbral de envío gratuito.
 
 ## Notas de mantenimiento
 

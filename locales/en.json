@@ -371,5 +371,24 @@
       "default_title": "Default Title",
       "sticky_add_to_cart": "Quick add to cart bar"
     }
+  },
+  "vicamar": {
+    "guia_medidas": {
+      "titulo": "Size guide",
+      "abrir": "Size guide",
+      "encabezado_cama": "Bed size",
+      "col_bajera": "Fitted sheet",
+      "col_encimera": "Flat sheet",
+      "col_funda_almohada": "Pillowcase",
+      "col_funda_nordica": "Duvet cover",
+      "col_relleno": "Duvet insert",
+      "col_almohada": "Pillow",
+      "col_protector": "Mattress protector",
+      "col_alto": "Skirt depth",
+      "unidades": "All measurements in centimetres (width × length).",
+      "tolerancia": "Approximate measurements: they may vary by ±2 cm due to the making-up process and the first wash.",
+      "una_unidad": "1 unit",
+      "dos_unidades": "2 units"
+    }
   }
 }

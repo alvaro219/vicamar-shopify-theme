@@ -33,6 +33,10 @@
     "text": "Text"
   },
   "content": {
+    "vicamar_linea_1": "Line 1",
+    "vicamar_linea_2": "Line 2",
+    "vicamar_linea_3": "Line 3",
+    "vicamar_linea_4": "Line 4",
     "visible_if_collection_has_more_products": "Visible if collection has more products than shown",
     "advanced": "Advanced",
     "appearance": "Appearance",
@@ -223,6 +227,8 @@
     "work_quickly_to_ship": "<p>We will work quickly to ship your order as soon as possible. Once your order has shipped, you will receive an email with further information. Delivery times vary depending on your location.</p>"
   },
   "info": {
+    "vicamar_tipo_tabla": "With \"Automatic\" the chart is picked from the product type. The custom.guia_medidas product metafield, when present, takes precedence over the chart.",
+    "vicamar_confianza_provisional": "The default delivery times and amounts are provisional: update them once the client confirms the carrier, rates and free shipping threshold.",
     "actions_display_style": "Icons are always used on mobile",
     "applies_on_image_only": "Applies to images only",
     "aspect_ratio_adjusted": "Adjusted in some layouts",
@@ -252,6 +258,8 @@
     "media_type_info": "Features are populated from your menu links"
   },
   "names": {
+    "vicamar_guia_medidas": "Size guide",
+    "vicamar_confianza_envios": "Trust and shipping",
     "column": "Column",
     "product_title": "Product title",
     "custom_liquid": "Custom Liquid",
@@ -421,6 +429,12 @@
     "comparison_slider": "Comparison slider"
   },
   "options": {
+    "vicamar_tabla_auto": "Automatic (from product type)",
+    "vicamar_tabla_sabanas": "Sheet set",
+    "vicamar_tabla_funda_nordica": "Duvet cover",
+    "vicamar_tabla_relleno": "Duvet insert",
+    "vicamar_tabla_almohada": "Pillow",
+    "vicamar_tabla_protector": "Mattress protector",
     "above_carousel": "Above carousel",
     "accent": "Accent",
     "all": "All",
@@ -734,6 +748,9 @@
     "below_media": "Below media"
   },
   "settings": {
+    "vicamar_tipo_tabla": "Size chart",
+    "vicamar_mostrar_icono": "Show ruler icon",
+    "vicamar_nota_medidas": "Additional note",
     "accordion": "Accordion",
     "account": "Account",
     "actions_display_style": "Menu style",
@@ -1187,6 +1204,15 @@
     "bottom_row_text": "Bottom row text"
   },
   "text_defaults": {
+    "vicamar_guia_medidas": "Size guide",
+    "vicamar_envio_titulo": "Delivery in 24-48 h",
+    "vicamar_envio_texto": "Mainland Spain. Ask about delivery times for the Balearic and Canary Islands.",
+    "vicamar_envio_gratis_titulo": "Free shipping over €49",
+    "vicamar_envio_gratis_texto": "On orders to mainland Spain.",
+    "vicamar_devolucion_titulo": "14-day returns",
+    "vicamar_devolucion_texto": "Right of withdrawal, no reason required.",
+    "vicamar_pago_titulo": "Secure payment",
+    "vicamar_pago_texto": "Card and Bizum.",
     "accordion_heading": "Accordion heading",
     "are_purchases_final_sale": "Are any purchases final sale?",
     "be_bold": "Be bold.",

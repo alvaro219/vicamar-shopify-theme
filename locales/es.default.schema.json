@@ -9,6 +9,8 @@
  */
 {
   "names": {
+    "vicamar_guia_medidas": "Guía de medidas",
+    "vicamar_confianza_envios": "Confianza y envíos",
     "404": "404",
     "colors": "Paleta de colores",
     "custom_section": "Sección personalizada",
@@ -171,6 +173,9 @@
     "disclosures": "Advertencias legales"
   },
   "settings": {
+    "vicamar_tipo_tabla": "Tabla de medidas",
+    "vicamar_mostrar_icono": "Mostrar icono de regla",
+    "vicamar_nota_medidas": "Nota adicional",
     "alignment": "Alineación",
     "autoplay": "Reproducción automática",
     "background": "Fondo",
@@ -586,6 +591,12 @@
     "title_preset": "Preajuste del título"
   },
   "options": {
+    "vicamar_tabla_auto": "Automática (según el tipo de producto)",
+    "vicamar_tabla_sabanas": "Juego de sábanas",
+    "vicamar_tabla_funda_nordica": "Funda nórdica",
+    "vicamar_tabla_relleno": "Relleno nórdico",
+    "vicamar_tabla_almohada": "Almohada",
+    "vicamar_tabla_protector": "Protector de colchón",
     "apple": "Apple",
     "arrow": "Flecha",
     "auto": "Auto",
@@ -862,6 +873,10 @@
     "input_field": "Campo de entrada"
   },
   "content": {
+    "vicamar_linea_1": "Línea 1",
+    "vicamar_linea_2": "Línea 2",
+    "vicamar_linea_3": "Línea 3",
+    "vicamar_linea_4": "Línea 4",
     "advanced": "Avanzado",
     "background_image": "Imagen de fondo",
     "background_video": "Vídeo de fondo",
@@ -1047,6 +1062,15 @@
     "shop_collection": "<p>Descubre nuestra colección seleccionada con favoritos seleccionados a mano que combinan estilo y calidad.</p>"
   },
   "text_defaults": {
+    "vicamar_guia_medidas": "Guía de medidas",
+    "vicamar_envio_titulo": "Envío en 24-48 h",
+    "vicamar_envio_texto": "Península. Consulta plazos para Baleares y Canarias.",
+    "vicamar_envio_gratis_titulo": "Envío gratis desde 49 €",
+    "vicamar_envio_gratis_texto": "En pedidos a península.",
+    "vicamar_devolucion_titulo": "Devoluciones en 14 días",
+    "vicamar_devolucion_texto": "Derecho de desistimiento sin necesidad de justificación.",
+    "vicamar_pago_titulo": "Pago seguro",
+    "vicamar_pago_texto": "Tarjeta y Bizum.",
     "button_label": "Comprar ahora",
     "collapsible_row": "Fila plegable",
     "heading": "Título",
@@ -1085,6 +1109,8 @@
     "disclosures": "Advertencias legales"
   },
   "info": {
+    "vicamar_tipo_tabla": "Con «Automática» la tabla se elige según el tipo de producto. El metafield de producto custom.guia_medidas, si existe, tiene prioridad sobre la tabla.",
+    "vicamar_confianza_provisional": "Los plazos e importes por defecto son provisionales: actualízalos cuando el cliente confirme transportista, tarifas y umbral de envío gratuito.",
     "carousel_layout_on_mobile": "En dispositivos móviles siempre se usa el carrusel",
     "video_alt_text": "Describe el vídeo para personas usuarias de tecnologías de asistencia",
     "video_autoplay": "Los vídeos estarán silenciados de forma predeterminada",

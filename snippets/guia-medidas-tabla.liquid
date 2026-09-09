@@ -1,0 +1,73 @@
+{%- doc -%}
+  Renderiza la tabla de medidas de una familia de producto de textil de hogar.
+
+  Las medidas van en centimetros y en formato ancho x largo. La columna de la
+  izquierda es el tamano de cama, que coincide con los valores de la opcion
+  "Tamano" del catalogo (90/105/135/150/180 cm; 70/90/135 cm en almohadas).
+
+  Las cifras son las habituales del sector en Espana y sirven de punto de
+  partida. Antes del lanzamiento hay que contrastarlas con las fichas reales
+  del proveedor de Vicamar, o sobreescribirlas por producto con el metafield
+  `custom.guia_medidas`.
+
+  @param {string} tipo - Familia de producto: 'sabanas', 'funda_nordica',
+                         'relleno', 'almohada' o 'protector'.
+{%- enddoc -%}
+
+<table class="guia-medidas__tabla">
+  <thead>
+    <tr>
+      <th scope="col">{{ 'vicamar.guia_medidas.encabezado_cama' | t }}</th>
+      {%- case tipo -%}
+        {%- when 'sabanas' -%}
+          <th scope="col">{{ 'vicamar.guia_medidas.col_bajera' | t }}</th>
+          <th scope="col">{{ 'vicamar.guia_medidas.col_encimera' | t }}</th>
+          <th scope="col">{{ 'vicamar.guia_medidas.col_funda_almohada' | t }}</th>
+        {%- when 'funda_nordica' -%}
+          <th scope="col">{{ 'vicamar.guia_medidas.col_funda_nordica' | t }}</th>
+          <th scope="col">{{ 'vicamar.guia_medidas.col_funda_almohada' | t }}</th>
+        {%- when 'relleno' -%}
+          <th scope="col">{{ 'vicamar.guia_medidas.col_relleno' | t }}</th>
+        {%- when 'almohada' -%}
+          <th scope="col">{{ 'vicamar.guia_medidas.col_almohada' | t }}</th>
+        {%- when 'protector' -%}
+          <th scope="col">{{ 'vicamar.guia_medidas.col_protector' | t }}</th>
+          <th scope="col">{{ 'vicamar.guia_medidas.col_alto' | t }}</th>
+      {%- endcase -%}
+    </tr>
+  </thead>
+  <tbody>
+    {%- assign una = 'vicamar.guia_medidas.una_unidad' | t -%}
+    {%- assign dos = 'vicamar.guia_medidas.dos_unidades' | t -%}
+    {%- case tipo -%}
+      {%- when 'sabanas' -%}
+        <tr><th scope="row">90 cm</th><td>90 × 190/200</td><td>160 × 270</td><td>45 × 110 ({{ una }})</td></tr>
+        <tr><th scope="row">105 cm</th><td>105 × 190/200</td><td>180 × 270</td><td>45 × 125 ({{ una }})</td></tr>
+        <tr><th scope="row">135 cm</th><td>135 × 190/200</td><td>220 × 270</td><td>45 × 155 ({{ una }})</td></tr>
+        <tr><th scope="row">150 cm</th><td>150 × 190/200</td><td>240 × 280</td><td>45 × 90 ({{ dos }})</td></tr>
+        <tr><th scope="row">180 cm</th><td>180 × 200</td><td>260 × 280</td><td>45 × 90 ({{ dos }})</td></tr>
+      {%- when 'funda_nordica' -%}
+        <tr><th scope="row">90 cm</th><td>150 × 220</td><td>45 × 110 ({{ una }})</td></tr>
+        <tr><th scope="row">105 cm</th><td>180 × 220</td><td>45 × 125 ({{ una }})</td></tr>
+        <tr><th scope="row">135 cm</th><td>220 × 220</td><td>45 × 155 ({{ una }})</td></tr>
+        <tr><th scope="row">150 cm</th><td>240 × 220</td><td>45 × 90 ({{ dos }})</td></tr>
+        <tr><th scope="row">180 cm</th><td>260 × 240</td><td>45 × 90 ({{ dos }})</td></tr>
+      {%- when 'relleno' -%}
+        <tr><th scope="row">90 cm</th><td>150 × 220</td></tr>
+        <tr><th scope="row">105 cm</th><td>180 × 220</td></tr>
+        <tr><th scope="row">135 cm</th><td>220 × 220</td></tr>
+        <tr><th scope="row">150 cm</th><td>240 × 220</td></tr>
+        <tr><th scope="row">180 cm</th><td>260 × 240</td></tr>
+      {%- when 'almohada' -%}
+        <tr><th scope="row">70 cm</th><td>70 × 40</td></tr>
+        <tr><th scope="row">90 cm</th><td>90 × 40</td></tr>
+        <tr><th scope="row">135 cm</th><td>135 × 40</td></tr>
+      {%- when 'protector' -%}
+        <tr><th scope="row">90 cm</th><td>90 × 190/200</td><td>30</td></tr>
+        <tr><th scope="row">105 cm</th><td>105 × 190/200</td><td>30</td></tr>
+        <tr><th scope="row">135 cm</th><td>135 × 190/200</td><td>30</td></tr>
+        <tr><th scope="row">150 cm</th><td>150 × 190/200</td><td>30</td></tr>
+        <tr><th scope="row">180 cm</th><td>180 × 200</td><td>30</td></tr>
+    {%- endcase -%}
+  </tbody>
+</table>
