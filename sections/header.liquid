@@ -1232,6 +1232,57 @@
     font-family: var(--menu-localization-font);
     font-size: var(--menu-localization-font-size);
   }
+
+  /*
+    Indicador de desplegable en los elementos de primer nivel que tienen
+    submenu.
+
+    Horizon ya pinta el boton .menu-list__disclosure con su flecha, y el JS de
+    header-menu.js lo usa, pero el tema no traia ninguna regla de estilo para
+    el: el boton quedaba sin dimensiones y no se veia. Sin indicador visual el
+    visitante no sabe que "SHOP" abre un menu hasta que pasa el raton por
+    encima, y en tactil directamente no hay hover.
+
+    Se reutilizan los mismos tokens que el selector de idioma de la cabecera,
+    que esta justo al lado, para que las dos flechas se vean iguales.
+  */
+  .menu-list__trigger {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--padding-2xs);
+  }
+
+  .menu-list__disclosure {
+    display: inline-flex;
+    align-items: center;
+    padding: 0;
+    color: inherit;
+    cursor: pointer;
+  }
+
+  .menu-list__disclosure-icon {
+    width: var(--icon-size-xs);
+    height: var(--icon-size-xs);
+    flex-shrink: 0;
+    transition: transform var(--animation-speed) var(--animation-easing);
+  }
+
+  /*
+    El submenu se abre de dos maneras: al pasar el raton, que hace que el JS le
+    quite el atributo `inert`, y al pulsar el boton, que cambia aria-expanded.
+    Se contemplan las dos para que la flecha gire siempre que el menu esta
+    abierto, se haya abierto como se haya abierto.
+  */
+  .menu-list__disclosure[aria-expanded='true'] .menu-list__disclosure-icon,
+  .menu-list__list-item:has(.menu-list__submenu:not([inert])) .menu-list__disclosure-icon {
+    transform: rotate(180deg);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .menu-list__disclosure-icon {
+      transition: none;
+    }
+  }
 {% endstylesheet %}
 
 {% unless request.design_mode %}
