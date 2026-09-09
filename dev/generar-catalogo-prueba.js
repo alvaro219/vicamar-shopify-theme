@@ -2,143 +2,143 @@
  * Genera un CSV de productos de PRUEBA para importar en la tienda de desarrollo.
  *
  * ATENCION: esto NO es el catalogo real de Vicamar. Son datos inventados para
- * poder construir y probar la ficha de producto y el listado de coleccion con
- * variantes reales (tamaños de cama, colores, materiales). Los precios son
- * orientativos de mercado, no los del cliente. Antes del lanzamiento hay que
- * borrar estos productos y cargar el catalogo real.
+ * poder construir y probar la navegacion, el listado de coleccion y la ficha de
+ * producto con variantes reales. Los precios son orientativos de mercado, no los
+ * del cliente. Antes del lanzamiento hay que borrar estos productos y cargar el
+ * catalogo real.
+ *
+ * El "Type" de cada producto y sus etiquetas estan elegidos para que coincidan
+ * con las condiciones de las colecciones automaticas descritas en
+ * docs/navegacion-y-colecciones.md. Si cambias la taxonomia alli, cambiala aqui.
+ *
+ * Dos categorias del menu se quedan A PROPOSITO sin productos, porque el cliente
+ * todavia no tiene genero de ellas: "Juegos de Cama > Invierno" (etiqueta
+ * "invierno") y "Edredones" (tipo "Edredones").
  *
  * Uso:  node dev/generar-catalogo-prueba.js
  * Salida: dev/catalogo-prueba.csv
- *
- * Importar en: Shopify Admin -> Productos -> Importar -> subir el CSV.
+ * Importar en: Shopify Admin -> Productos -> Importar.
  */
 const fs = require('fs');
 const path = require('path');
 
-// Tamaños de cama habituales en España, en centimetros de ancho de colchon.
+// Tamaños de cama habituales en España, por ancho de colchon.
 const CAMAS = ['90 cm', '105 cm', '135 cm', '150 cm', '180 cm'];
-const ALMOHADAS = ['70 cm', '90 cm', '135 cm'];
+const FUNDAS_ALMOHADA = ['70 cm', '90 cm', '135 cm'];
+const TOALLAS = ['Tocador', 'Lavabo', 'Ducha', 'Baño'];
 
-// Sobreprecio por tamaño respecto al de 90 cm.
-const INCREMENTO = { '90 cm': 0, '105 cm': 4, '135 cm': 10, '150 cm': 14, '180 cm': 20 };
-const INCREMENTO_ALMOHADA = { '70 cm': 0, '90 cm': 4, '135 cm': 9 };
+// Sobreprecio de cada medida respecto a la mas pequeña.
+const INC_CAMA = { '90 cm': 0, '105 cm': 4, '135 cm': 10, '150 cm': 14, '180 cm': 20 };
+const INC_ALMOHADA = { '70 cm': 0, '90 cm': 3, '135 cm': 7 };
+const INC_TOALLA = { Tocador: 0, Lavabo: 3, Ducha: 8, 'Baño': 14 };
+
+// Segundas opciones que justifican un pequeño sobreprecio.
+const RECARGO = /300 hilos|Firme|egipcio|impermeable/i;
 
 const PRODUCTOS = [
   {
     handle: 'juego-sabanas-percal-200-hilos',
     titulo: 'Juego de sábanas percal 200 hilos',
-    tipo: 'Sábanas',
-    etiquetas: 'sábanas, percal, algodón, todo el año',
+    tipo: 'Juegos de cama',
+    etiquetas: 'primavera-verano, percal, algodón',
     descripcion:
       '<p>Juego de sábanas de percal de algodón 100 % con densidad de 200 hilos. Incluye sábana bajera ajustable, sábana encimera y funda o fundas de almohada.</p>' +
-      '<p>Tacto fresco y transpirable, ideal para todo el año. Apto para lavadora a 60 °C.</p>',
-    opciones: [
-      ['Tamaño', CAMAS],
-      ['Color', ['Blanco', 'Gris perla', 'Azul empolvado']],
-    ],
+      '<p>Tacto fresco y transpirable, pensado para primavera y verano. Apto para lavadora a 60 °C.</p>',
+    opciones: [['Tamaño', CAMAS], ['Color', ['Blanco', 'Gris perla', 'Azul empolvado']]],
+    incrementos: INC_CAMA,
     precioBase: 39.95,
     gramosBase: 1200,
   },
   {
     handle: 'juego-sabanas-algodon-egipcio-300-hilos',
     titulo: 'Juego de sábanas algodón egipcio 300 hilos',
-    tipo: 'Sábanas',
-    etiquetas: 'sábanas, algodón egipcio, premium',
+    tipo: 'Juegos de cama',
+    etiquetas: 'primavera-verano, algodón egipcio, premium',
     descripcion:
       '<p>Juego de sábanas de algodón egipcio de fibra larga con densidad de 300 hilos y acabado satinado.</p>' +
       '<p>Suavidad y caída superiores, con mayor durabilidad lavado tras lavado. Incluye bajera ajustable, encimera y fundas de almohada.</p>',
-    opciones: [
-      ['Tamaño', CAMAS],
-      ['Color', ['Blanco', 'Arena', 'Verde salvia']],
-    ],
+    opciones: [['Tamaño', CAMAS], ['Color', ['Blanco', 'Arena', 'Verde salvia']]],
+    incrementos: INC_CAMA,
     precioBase: 69.95,
     gramosBase: 1400,
   },
   {
-    handle: 'funda-nordica-algodon-lisa',
-    titulo: 'Funda nórdica lisa de algodón',
-    tipo: 'Fundas nórdicas',
-    etiquetas: 'funda nórdica, algodón, liso',
+    handle: 'sabana-bajera-ajustable-algodon',
+    titulo: 'Sábana bajera ajustable de algodón',
+    tipo: 'Sábanas bajeras',
+    etiquetas: 'bajera, algodón, ajustable',
     descripcion:
-      '<p>Funda nórdica de algodón 100 % con cierre de botones ocultos y cintas interiores para sujetar el relleno.</p>' +
-      '<p>Se vende sin relleno nórdico. Consulta la guía de tamaños para elegir la medida correcta según tu cama.</p>',
-    opciones: [
-      ['Tamaño', CAMAS],
-      ['Color', ['Blanco', 'Gris perla', 'Arena', 'Azul empolvado']],
-    ],
-    precioBase: 44.95,
-    gramosBase: 1100,
+      '<p>Sábana bajera de algodón 100 % con goma perimetral. Se adapta a colchones de hasta 30 cm de alto.</p>' +
+      '<p>Se vende suelta, para reponer o combinar con cualquier juego de cama.</p>',
+    opciones: [['Tamaño', CAMAS], ['Color', ['Blanco', 'Gris perla', 'Arena', 'Azul empolvado']]],
+    incrementos: INC_CAMA,
+    precioBase: 17.95,
+    gramosBase: 600,
   },
   {
-    handle: 'funda-nordica-estampada-hojas',
-    titulo: 'Funda nórdica estampada Hojas',
-    tipo: 'Fundas nórdicas',
-    etiquetas: 'funda nórdica, estampado, algodón',
+    handle: 'funda-almohada-percal-pack-2',
+    titulo: 'Fundas de almohada percal (pack de 2)',
+    tipo: 'Fundas de almohada',
+    etiquetas: 'funda de almohada, percal, pack',
     descripcion:
-      '<p>Funda nórdica de algodón con estampado botánico reversible: cara estampada y cara lisa a juego.</p>' +
-      '<p>Incluye funda o fundas de cojín a juego. Se vende sin relleno nórdico.</p>',
-    opciones: [
-      ['Tamaño', CAMAS],
-      ['Color', ['Verde salvia', 'Terracota']],
-    ],
-    precioBase: 54.95,
-    gramosBase: 1150,
-  },
-  {
-    handle: 'relleno-nordico-fibra',
-    titulo: 'Relleno nórdico de fibra hueca',
-    tipo: 'Rellenos',
-    etiquetas: 'relleno nórdico, fibra, invierno',
-    descripcion:
-      '<p>Relleno nórdico de fibra hueca siliconada con acabado antialérgico. Ligero, cálido y fácil de lavar.</p>' +
-      '<p>Elige el gramaje según la temperatura de tu dormitorio: 250 g para entretiempo y 400 g para invierno.</p>',
-    opciones: [
-      ['Tamaño', CAMAS],
-      ['Gramaje', ['250 g/m²', '400 g/m²']],
-    ],
-    precioBase: 49.95,
-    gramosBase: 1800,
-  },
-  {
-    handle: 'almohada-viscoelastica',
-    titulo: 'Almohada viscoelástica',
-    tipo: 'Almohadas',
-    etiquetas: 'almohada, viscoelástica, cervical',
-    descripcion:
-      '<p>Almohada de viscoelástica de alta densidad que se adapta a la forma del cuello y reparte la presión.</p>' +
-      '<p>Funda exterior desenfundable y lavable a máquina.</p>',
-    opciones: [
-      ['Tamaño', ALMOHADAS],
-      ['Firmeza', ['Media', 'Firme']],
-    ],
-    precioBase: 34.95,
-    gramosBase: 900,
-    almohada: true,
-  },
-  {
-    handle: 'almohada-fibra-transpirable',
-    titulo: 'Almohada de fibra transpirable',
-    tipo: 'Almohadas',
-    etiquetas: 'almohada, fibra, transpirable',
-    descripcion:
-      '<p>Almohada de fibra hueca con canales de ventilación, de firmeza media-baja.</p>' +
-      '<p>Lavable a máquina a 30 °C. Recuperación rápida de la forma.</p>',
-    opciones: [['Tamaño', ALMOHADAS]],
-    precioBase: 19.95,
-    gramosBase: 700,
-    almohada: true,
+      '<p>Pack de dos fundas de almohada de percal de algodón con cierre de solapa interior.</p>' +
+      '<p>La medida corresponde al largo de la almohada. Comprueba la de la tuya antes de elegir.</p>',
+    opciones: [['Tamaño', FUNDAS_ALMOHADA], ['Color', ['Blanco', 'Gris perla', 'Arena']]],
+    incrementos: INC_ALMOHADA,
+    precioBase: 12.95,
+    gramosBase: 300,
   },
   {
     handle: 'protector-colchon-impermeable',
     titulo: 'Protector de colchón impermeable',
-    tipo: 'Protectores',
+    tipo: 'Protectores de colchón',
     etiquetas: 'protector, impermeable, transpirable',
     descripcion:
       '<p>Protector de colchón de rizo de algodón con lámina de poliuretano impermeable y transpirable.</p>' +
       '<p>Ajustable con falda elástica hasta 30 cm de alto. No modifica el tacto del colchón.</p>',
     opciones: [['Tamaño', CAMAS]],
+    incrementos: INC_CAMA,
     precioBase: 24.95,
     gramosBase: 800,
+  },
+  {
+    handle: 'funda-colchon-elastica',
+    titulo: 'Funda de colchón elástica',
+    tipo: 'Protectores de colchón',
+    etiquetas: 'funda de colchón, elástica',
+    descripcion:
+      '<p>Funda de colchón de tejido elástico que envuelve el colchón por completo y se cierra con cremallera.</p>' +
+      '<p>Protege de polvo y ácaros sin restar transpirabilidad.</p>',
+    opciones: [['Tamaño', CAMAS]],
+    incrementos: INC_CAMA,
+    precioBase: 29.95,
+    gramosBase: 900,
+  },
+  {
+    handle: 'colcha-bouti-reversible',
+    titulo: 'Colcha bouti reversible',
+    tipo: 'Colchas',
+    etiquetas: 'colcha, bouti, reversible',
+    descripcion:
+      '<p>Colcha bouti acolchada y reversible, con dos caras lisas a juego y relleno ligero de fibra.</p>' +
+      '<p>Sirve como colcha de entretiempo o como capa extra sobre el nórdico en invierno.</p>',
+    opciones: [['Tamaño', CAMAS], ['Color', ['Gris perla', 'Arena', 'Verde salvia']]],
+    incrementos: INC_CAMA,
+    precioBase: 54.95,
+    gramosBase: 2000,
+  },
+  {
+    handle: 'toalla-algodon-peinado-500',
+    titulo: 'Toalla de algodón peinado 500 g',
+    tipo: 'Toallas',
+    etiquetas: 'toalla, algodón peinado, baño',
+    descripcion:
+      '<p>Toalla de algodón peinado de 500 g/m², de rizo denso y alta absorción.</p>' +
+      '<p>Mantiene el color y la esponjosidad lavado tras lavado. Disponible en cuatro medidas.</p>',
+    opciones: [['Medida', TOALLAS], ['Color', ['Blanco', 'Gris perla', 'Arena', 'Verde salvia']]],
+    incrementos: INC_TOALLA,
+    precioBase: 6.95,
+    gramosBase: 200,
   },
 ];
 
@@ -150,14 +150,12 @@ const COLUMNAS = [
   'Variant Requires Shipping', 'Variant Taxable', 'Variant Weight Unit', 'Status',
 ];
 
-// Escapa un campo segun RFC 4180: comillas dobles duplicadas y entrecomillado
-// si contiene coma, comilla o salto de linea.
+// Escapa un campo segun RFC 4180.
 function campo(valor) {
   const s = String(valor == null ? '' : valor);
   return /[",\n\r]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s;
 }
 
-// Producto cartesiano de las listas de valores de opcion.
 function combinaciones(listas) {
   return listas.reduce((acc, lista) => acc.flatMap(previo => lista.map(v => [...previo, v])), [[]]);
 }
@@ -171,19 +169,16 @@ function sku(handle, valores) {
 }
 
 const filas = [COLUMNAS];
-let totalVariantes = 0;
+const resumen = [];
 
 for (const p of PRODUCTOS) {
   const nombresOpcion = p.opciones.map(o => o[0]);
   const combos = combinaciones(p.opciones.map(o => o[1]));
-  const tabla = p.almohada ? INCREMENTO_ALMOHADA : INCREMENTO;
 
   combos.forEach((valores, i) => {
     const primera = i === 0;
-    const tamaño = valores[0];
-    const incremento = tabla[tamaño] || 0;
-    // La segunda opcion (material, gramaje, firmeza) tambien encarece un poco.
-    const extra = valores.length > 1 && /300 hilos|400 g|Firme|egipcio/.test(valores[1]) ? 5 : 0;
+    const incremento = p.incrementos[valores[0]] || 0;
+    const extra = valores.length > 1 && RECARGO.test(valores[1]) ? 5 : 0;
     const precio = (p.precioBase + incremento + extra).toFixed(2);
 
     filas.push([
@@ -209,17 +204,21 @@ for (const p of PRODUCTOS) {
       'g',
       primera ? 'active' : '',
     ]);
-    totalVariantes++;
   });
+
+  resumen.push({ titulo: p.titulo, tipo: p.tipo, variantes: combos.length, opciones: nombresOpcion });
 }
 
 const csv = filas.map(f => f.map(campo).join(',')).join('\r\n') + '\r\n';
-const destino = path.join(__dirname, 'catalogo-prueba.csv');
-fs.writeFileSync(destino, csv, 'utf8');
+fs.writeFileSync(path.join(__dirname, 'catalogo-prueba.csv'), csv, 'utf8');
 
-console.log('Generado ' + destino);
-console.log(PRODUCTOS.length + ' productos, ' + totalVariantes + ' variantes, ' + filas.length + ' filas (con cabecera).');
-for (const p of PRODUCTOS) {
-  const n = combinaciones(p.opciones.map(o => o[1])).length;
-  console.log('  ' + String(n).padStart(3) + ' variantes  ' + p.titulo + '  [' + p.opciones.map(o => o[0]).join(' x ') + ']');
-}
+const totalVariantes = resumen.reduce((s, r) => s + r.variantes, 0);
+console.log('Generado dev/catalogo-prueba.csv');
+console.log(PRODUCTOS.length + ' productos, ' + totalVariantes + ' variantes, ' + filas.length + ' filas (con cabecera).\n');
+
+const porTipo = {};
+for (const r of resumen) porTipo[r.tipo] = (porTipo[r.tipo] || 0) + 1;
+console.log('Por tipo de producto (condicion de las colecciones automaticas):');
+for (const [tipo, n] of Object.entries(porTipo)) console.log('  ' + String(n).padStart(2) + '  ' + tipo);
+console.log('   0  Edredones            <- a proposito sin genero');
+console.log('   0  etiqueta "invierno"  <- a proposito sin genero');

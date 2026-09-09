@@ -23,18 +23,30 @@
 
   assign tipo = block_settings.tipo_tabla
   if tipo == 'auto'
+    # Se deduce la tabla del tipo de producto. Los primeros valores de cada rama
+    # son la taxonomia real del catalogo (ver docs/navegacion-y-colecciones.md);
+    # los siguientes se mantienen como alias por si algun producto conserva un
+    # tipo antiguo. Si el tipo no encaja en ninguna rama, el bloque no se pinta.
     assign tipo_producto = producto.type | handleize
     case tipo_producto
-      when 'sabanas'
+      when 'juegos-de-cama', 'juego-de-cama', 'sabanas'
         assign tipo = 'sabanas'
+      when 'sabanas-bajeras', 'sabana-bajera'
+        assign tipo = 'bajera'
+      when 'fundas-de-almohada', 'fundas-almohada', 'almohadas'
+        assign tipo = 'funda_almohada'
+      when 'protectores-de-colchon', 'fundas-y-protectores-de-colchon', 'protectores', 'protector-de-colchon'
+        assign tipo = 'protector'
+      when 'colchas'
+        assign tipo = 'colcha'
+      when 'edredones', 'edredon'
+        assign tipo = 'edredon'
+      when 'toallas'
+        assign tipo = 'toalla'
       when 'fundas-nordicas', 'funda-nordica'
         assign tipo = 'funda_nordica'
       when 'rellenos', 'relleno-nordico'
         assign tipo = 'relleno'
-      when 'almohadas'
-        assign tipo = 'almohada'
-      when 'protectores', 'protector-de-colchon'
-        assign tipo = 'protector'
       else
         assign tipo = ''
     endcase
@@ -216,10 +228,14 @@
       "options": [
         { "value": "auto", "label": "t:options.vicamar_tabla_auto" },
         { "value": "sabanas", "label": "t:options.vicamar_tabla_sabanas" },
+        { "value": "bajera", "label": "t:options.vicamar_tabla_bajera" },
         { "value": "funda_nordica", "label": "t:options.vicamar_tabla_funda_nordica" },
+        { "value": "edredon", "label": "t:options.vicamar_tabla_edredon" },
         { "value": "relleno", "label": "t:options.vicamar_tabla_relleno" },
+        { "value": "colcha", "label": "t:options.vicamar_tabla_colcha" },
         { "value": "almohada", "label": "t:options.vicamar_tabla_almohada" },
-        { "value": "protector", "label": "t:options.vicamar_tabla_protector" }
+        { "value": "protector", "label": "t:options.vicamar_tabla_protector" },
+        { "value": "toalla", "label": "t:options.vicamar_tabla_toalla" }
       ],
       "default": "auto"
     },

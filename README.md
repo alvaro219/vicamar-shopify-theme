@@ -93,9 +93,15 @@ La carpeta [`dev/`](dev/) contiene datos de desarrollo, **no** código del tema
 (está excluida en `.shopifyignore`, así que nunca se sube a Shopify).
 
 `dev/generar-catalogo-prueba.js` genera `dev/catalogo-prueba.csv`: 8 productos
-y 84 variantes de textil de hogar —sábanas, fundas nórdicas, rellenos,
-almohadas y protectores— con tamaños de cama españoles (90/105/135/150/180) y
-opciones de color, material, gramaje y firmeza.
+y 100 variantes de textil de hogar con tamaños de cama españoles
+(90/105/135/150/180) y opciones de color y medida.
+
+El **tipo de producto** de cada uno está elegido para que encaje con las
+condiciones de las colecciones automáticas de
+[`docs/navegacion-y-colecciones.md`](docs/navegacion-y-colecciones.md): juegos
+de cama, sábanas bajeras, fundas de almohada, protectores de colchón, colchas y
+toallas. `Edredones` y la etiqueta `invierno` se quedan **a propósito sin
+producto**, porque el cliente todavía no tiene género de esas dos categorías.
 
 ```bash
 node dev/generar-catalogo-prueba.js
@@ -124,7 +130,13 @@ de elegir talla. La tabla sale de dos sitios, por este orden:
    Productos*.
 2. Las tablas estándar de `snippets/guia-medidas-tabla.liquid`, elegidas con el
    ajuste *Tabla de medidas* o deducidas del tipo de producto cuando está en
-   «Automática» (Sábanas, Fundas nórdicas, Rellenos, Almohadas, Protectores).
+   «Automática»: juegos de cama, sábanas bajeras, fundas nórdicas, edredones,
+   rellenos, colchas, fundas de almohada, protectores de colchón y toallas.
+
+> El mapeo automático se apoya en el **tipo de producto**. Si se cambia la
+> taxonomía del catálogo hay que actualizar el `case` de
+> `blocks/guia-medidas.liquid`, o la guía dejará de aparecer en las fichas sin
+> avisar de nada.
 
 > Las medidas del snippet son las habituales del sector en España y **no están
 > contrastadas con el proveedor de Vicamar**. Hay que revisarlas antes del
@@ -138,6 +150,17 @@ que el bloque admite menos de cuatro.
 > Los plazos e importes por defecto (24-48 h, envío gratis desde 49 €) son
 > **provisionales**. Hay que sustituirlos en cuanto el cliente confirme
 > transportista, tarifas y umbral de envío gratuito.
+
+## Navegación y colecciones
+
+El menú de la tienda y las colecciones que lo alimentan son **datos de Shopify,
+no código del tema**: no se despliegan con `theme push` ni viajan entre la dev
+store y producción, así que hay que rehacerlos en la tienda del cliente tras la
+transferencia.
+
+[`docs/navegacion-y-colecciones.md`](docs/navegacion-y-colecciones.md) recoge la
+estructura completa del menú, las once colecciones automáticas con sus
+condiciones y órdenes, y el orden de trabajo para montarlo todo.
 
 ## Notas de mantenimiento
 

@@ -5,3 +5,4 @@ dev/*
 .github/*
 README.md
 .gitattributes
+docs/*

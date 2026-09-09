@@ -3,49 +3,82 @@
 
   Las medidas van en centimetros y en formato ancho x largo. La columna de la
   izquierda es el tamano de cama, que coincide con los valores de la opcion
-  "Tamano" del catalogo (90/105/135/150/180 cm; 70/90/135 cm en almohadas).
+  "Tamano" del catalogo (90/105/135/150/180 cm). En fundas de almohada y toallas
+  esa columna es la medida de la pieza, no la de la cama.
 
   Las cifras son las habituales del sector en Espana y sirven de punto de
   partida. Antes del lanzamiento hay que contrastarlas con las fichas reales
   del proveedor de Vicamar, o sobreescribirlas por producto con el metafield
   `custom.guia_medidas`.
 
-  @param {string} tipo - Familia de producto: 'sabanas', 'funda_nordica',
-                         'relleno', 'almohada' o 'protector'.
+  @param {string} tipo - Familia de producto: 'sabanas', 'bajera',
+                         'funda_nordica', 'edredon', 'relleno', 'colcha',
+                         'funda_almohada', 'protector' o 'toalla'.
+                         Se acepta 'almohada' como alias historico de
+                         'funda_almohada'.
 {%- enddoc -%}
+
+{%- liquid
+  assign familia = tipo
+  if familia == 'almohada'
+    assign familia = 'funda_almohada'
+  endif
+
+  # En fundas de almohada y toallas la primera columna no es un tamano de cama,
+  # sino la medida de la propia pieza.
+  assign encabezado = 'vicamar.guia_medidas.encabezado_cama'
+  if familia == 'funda_almohada' or familia == 'toalla'
+    assign encabezado = 'vicamar.guia_medidas.encabezado_medida'
+  endif
+-%}
 
 <table class="guia-medidas__tabla">
   <thead>
     <tr>
-      <th scope="col">{{ 'vicamar.guia_medidas.encabezado_cama' | t }}</th>
-      {%- case tipo -%}
+      <th scope="col">{{ encabezado | t }}</th>
+      {%- case familia -%}
         {%- when 'sabanas' -%}
           <th scope="col">{{ 'vicamar.guia_medidas.col_bajera' | t }}</th>
           <th scope="col">{{ 'vicamar.guia_medidas.col_encimera' | t }}</th>
           <th scope="col">{{ 'vicamar.guia_medidas.col_funda_almohada' | t }}</th>
+        {%- when 'bajera' -%}
+          <th scope="col">{{ 'vicamar.guia_medidas.col_bajera' | t }}</th>
+          <th scope="col">{{ 'vicamar.guia_medidas.col_alto' | t }}</th>
         {%- when 'funda_nordica' -%}
           <th scope="col">{{ 'vicamar.guia_medidas.col_funda_nordica' | t }}</th>
           <th scope="col">{{ 'vicamar.guia_medidas.col_funda_almohada' | t }}</th>
         {%- when 'relleno' -%}
           <th scope="col">{{ 'vicamar.guia_medidas.col_relleno' | t }}</th>
-        {%- when 'almohada' -%}
-          <th scope="col">{{ 'vicamar.guia_medidas.col_almohada' | t }}</th>
+        {%- when 'edredon' -%}
+          <th scope="col">{{ 'vicamar.guia_medidas.col_edredon' | t }}</th>
+        {%- when 'colcha' -%}
+          <th scope="col">{{ 'vicamar.guia_medidas.col_colcha' | t }}</th>
+        {%- when 'funda_almohada' -%}
+          <th scope="col">{{ 'vicamar.guia_medidas.col_funda_almohada' | t }}</th>
         {%- when 'protector' -%}
           <th scope="col">{{ 'vicamar.guia_medidas.col_protector' | t }}</th>
           <th scope="col">{{ 'vicamar.guia_medidas.col_alto' | t }}</th>
+        {%- when 'toalla' -%}
+          <th scope="col">{{ 'vicamar.guia_medidas.col_toalla' | t }}</th>
       {%- endcase -%}
     </tr>
   </thead>
   <tbody>
     {%- assign una = 'vicamar.guia_medidas.una_unidad' | t -%}
     {%- assign dos = 'vicamar.guia_medidas.dos_unidades' | t -%}
-    {%- case tipo -%}
+    {%- case familia -%}
       {%- when 'sabanas' -%}
         <tr><th scope="row">90 cm</th><td>90 × 190/200</td><td>160 × 270</td><td>45 × 110 ({{ una }})</td></tr>
         <tr><th scope="row">105 cm</th><td>105 × 190/200</td><td>180 × 270</td><td>45 × 125 ({{ una }})</td></tr>
         <tr><th scope="row">135 cm</th><td>135 × 190/200</td><td>220 × 270</td><td>45 × 155 ({{ una }})</td></tr>
         <tr><th scope="row">150 cm</th><td>150 × 190/200</td><td>240 × 280</td><td>45 × 90 ({{ dos }})</td></tr>
         <tr><th scope="row">180 cm</th><td>180 × 200</td><td>260 × 280</td><td>45 × 90 ({{ dos }})</td></tr>
+      {%- when 'bajera' -%}
+        <tr><th scope="row">90 cm</th><td>90 × 190/200</td><td>30</td></tr>
+        <tr><th scope="row">105 cm</th><td>105 × 190/200</td><td>30</td></tr>
+        <tr><th scope="row">135 cm</th><td>135 × 190/200</td><td>30</td></tr>
+        <tr><th scope="row">150 cm</th><td>150 × 190/200</td><td>30</td></tr>
+        <tr><th scope="row">180 cm</th><td>180 × 200</td><td>30</td></tr>
       {%- when 'funda_nordica' -%}
         <tr><th scope="row">90 cm</th><td>150 × 220</td><td>45 × 110 ({{ una }})</td></tr>
         <tr><th scope="row">105 cm</th><td>180 × 220</td><td>45 × 125 ({{ una }})</td></tr>
@@ -58,16 +91,33 @@
         <tr><th scope="row">135 cm</th><td>220 × 220</td></tr>
         <tr><th scope="row">150 cm</th><td>240 × 220</td></tr>
         <tr><th scope="row">180 cm</th><td>260 × 240</td></tr>
-      {%- when 'almohada' -%}
-        <tr><th scope="row">70 cm</th><td>70 × 40</td></tr>
-        <tr><th scope="row">90 cm</th><td>90 × 40</td></tr>
-        <tr><th scope="row">135 cm</th><td>135 × 40</td></tr>
+      {%- when 'edredon' -%}
+        <tr><th scope="row">90 cm</th><td>150 × 220</td></tr>
+        <tr><th scope="row">105 cm</th><td>180 × 220</td></tr>
+        <tr><th scope="row">135 cm</th><td>220 × 220</td></tr>
+        <tr><th scope="row">150 cm</th><td>240 × 220</td></tr>
+        <tr><th scope="row">180 cm</th><td>260 × 240</td></tr>
+      {%- when 'colcha' -%}
+        <tr><th scope="row">90 cm</th><td>180 × 260</td></tr>
+        <tr><th scope="row">105 cm</th><td>200 × 260</td></tr>
+        <tr><th scope="row">135 cm</th><td>230 × 260</td></tr>
+        <tr><th scope="row">150 cm</th><td>250 × 270</td></tr>
+        <tr><th scope="row">180 cm</th><td>280 × 270</td></tr>
+      {%- when 'funda_almohada' -%}
+        <tr><th scope="row">70 cm</th><td>45 × 75</td></tr>
+        <tr><th scope="row">90 cm</th><td>45 × 95</td></tr>
+        <tr><th scope="row">135 cm</th><td>45 × 140</td></tr>
       {%- when 'protector' -%}
         <tr><th scope="row">90 cm</th><td>90 × 190/200</td><td>30</td></tr>
         <tr><th scope="row">105 cm</th><td>105 × 190/200</td><td>30</td></tr>
         <tr><th scope="row">135 cm</th><td>135 × 190/200</td><td>30</td></tr>
         <tr><th scope="row">150 cm</th><td>150 × 190/200</td><td>30</td></tr>
         <tr><th scope="row">180 cm</th><td>180 × 200</td><td>30</td></tr>
+      {%- when 'toalla' -%}
+        <tr><th scope="row">{{ 'vicamar.guia_medidas.toalla_tocador' | t }}</th><td>30 × 50</td></tr>
+        <tr><th scope="row">{{ 'vicamar.guia_medidas.toalla_lavabo' | t }}</th><td>50 × 100</td></tr>
+        <tr><th scope="row">{{ 'vicamar.guia_medidas.toalla_ducha' | t }}</th><td>70 × 140</td></tr>
+        <tr><th scope="row">{{ 'vicamar.guia_medidas.toalla_bano' | t }}</th><td>100 × 150</td></tr>
     {%- endcase -%}
   </tbody>
 </table>
