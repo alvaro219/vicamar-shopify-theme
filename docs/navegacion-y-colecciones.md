@@ -23,11 +23,11 @@ que es el campo que rellena el catálogo de prueba de `dev/`.
 | --- | --- | --- | --- |
 | Novedades | `novedades` | ver apartado 2 | Más reciente primero |
 | Juegos de Cama | `juegos-de-cama` | Tipo = `Juegos de cama` | Mejor vendido |
-| Invierno | `juegos-cama-invierno` | Tipo = `Juegos de cama` **y** Etiqueta = `invierno` | Mejor vendido |
-| Primavera/Verano | `juegos-cama-primavera-verano` | Tipo = `Juegos de cama` **y** Etiqueta = `primavera-verano` | Mejor vendido |
+| Invierno | `juegos-de-cama-invierno` ⚠️ | Tipo = `Juegos de cama` **y** Etiqueta = `invierno` | Mejor vendido |
+| Primavera/Verano | `juegos-de-cama-primavera-verano` ⚠️ | Tipo = `Juegos de cama` **y** Etiqueta = `primavera-verano` | Mejor vendido |
 | Sábanas Bajeras | `sabanas-bajeras` | Tipo = `Sábanas bajeras` | Mejor vendido |
-| Fundas de Almohadas | `fundas-almohadas` | Tipo = `Fundas de almohada` | Mejor vendido |
-| Fundas y Protectores de Colchón | `fundas-protectores-colchon` | Tipo = `Protectores de colchón` | Mejor vendido |
+| Fundas de Almohadas | `fundas-de-almohadas` | Tipo = `Fundas de almohada` | Mejor vendido |
+| Fundas y Protectores de Colchón | `fundas-y-protectores-de-colchon` | Tipo = `Protectores de colchón` | Mejor vendido |
 | Colchas | `colchas` | Tipo = `Colchas` | Mejor vendido |
 | Edredones | `edredones` | Tipo = `Edredones` | Mejor vendido |
 | Toallas | `toallas` | Tipo = `Toallas` | Mejor vendido |
@@ -35,6 +35,16 @@ que es el campo que rellena el catálogo de prueba de `dev/`.
 
 Cuando la condición lleva dos filtros, hay que marcar **«Los productos deben
 cumplir todas las condiciones»**.
+
+Shopify genera el handle solo, a partir del título, y en todos los casos sale
+ya el de la tabla. Las dos marcadas con ⚠️ son la excepción: por título
+quedarían `invierno` y `primavera-verano`, que como URL pública no dicen de qué
+son. Conviene corregirlas a mano en *Publicación en motores de búsqueda →
+Editar → Identificador de URL*, al pie de la ficha de la colección.
+
+Las condiciones **distinguen tildes y mayúsculas**: si el tipo del producto es
+`Protectores de colchón` y la condición dice `Protectores de colchon`, la
+colección se queda vacía sin dar ningún error.
 
 `Invierno` y `Edredones` se crean ahora pero **nacerán vacías**: el catálogo de
 prueba no genera producto de esas dos categorías a propósito, porque el cliente
@@ -78,11 +88,11 @@ Inicio                              /
 Novedades                           /collections/novedades
 SHOP                                /collections/all
 ├── Juegos de Cama                  /collections/juegos-de-cama
-│   ├── Invierno                    /collections/juegos-cama-invierno   (aún no)
-│   └── Primavera/Verano            /collections/juegos-cama-primavera-verano
+│   ├── Invierno                    /collections/juegos-de-cama-invierno   (aún no)
+│   └── Primavera/Verano            /collections/juegos-de-cama-primavera-verano
 ├── Sábanas Bajeras                 /collections/sabanas-bajeras
-├── Fundas de Almohadas             /collections/fundas-almohadas
-├── Fundas y Protectores de Colchón /collections/fundas-protectores-colchon
+├── Fundas de Almohadas             /collections/fundas-de-almohadas
+├── Fundas y Protectores de Colchón /collections/fundas-y-protectores-de-colchon
 ├── Colchas                         /collections/colchas
 ├── Edredones                       /collections/edredones             (aún no)
 └── Toallas                         /collections/toallas
