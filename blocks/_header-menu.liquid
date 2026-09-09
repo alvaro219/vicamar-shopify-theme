@@ -353,39 +353,37 @@
     }
   }
 
-  /* Wraps a top-level link and its disclosure button. Positioned so the
-     absolutely-positioned button can sit in the gap after the link without
-     affecting the top-bar layout. */
+  /* Wraps a top-level link and its disclosure button. Ambos van en linea: la
+     flecha ocupa su hueco despues del enlace (ver .menu-list__disclosure). */
   .menu-list__trigger {
-    position: relative;
     display: flex;
+    align-items: center;
     height: 100%;
   }
 
+  /*
+    VICAMAR: Horizon ocultaba esta flecha (opacity: 0 y pointer-events: none) y
+    solo la mostraba al recibir el foco con el teclado, de modo que un elemento
+    con submenu era indistinguible de un enlace normal hasta pasar el raton por
+    encima. En tactil, donde no hay hover, no habia ninguna pista.
+
+    Ahora se muestra siempre. Ademas se pasa de posicionamiento absoluto a
+    estatico para que la flecha ocupe su hueco dentro del flex y no se solape
+    con el siguiente elemento del menu al hacerse visible.
+  */
   .menu-list__disclosure {
-    position: absolute;
-    inset-block-start: 50%;
-    inset-inline-start: calc(100% - var(--gap-xs));
-    width: max-content;
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-shrink: 0;
+    /* Compensa el padding-inline del titulo del enlace para que la flecha no
+       quede demasiado separada de su etiqueta. */
+    margin-inline-start: calc(-1 * var(--gap-xs));
     padding-inline: var(--padding-3xs);
     padding-block: var(--padding-sm);
     color: var(--menu-top-level-font-color);
     cursor: pointer;
-    opacity: 0;
-    transform: translateY(-50%);
     outline-offset: 0.1em;
-
-    /* Hidden control must not intercept pointer events; hover-open is driven by
-       the list item itself. */
-    pointer-events: none;
-
-    &:focus-visible {
-      opacity: 1;
-      pointer-events: auto;
-    }
   }
 
   .menu-list__disclosure-icon {
@@ -396,7 +394,20 @@
     transition: transform var(--animation-speed) var(--animation-easing);
   }
 
-  .menu-list__disclosure[aria-expanded='true'] .menu-list__disclosure-icon {
+  /*
+    VICAMAR: el submenu se abre de dos maneras y la flecha debe girar en ambas.
+    Al pulsar el boton cambia aria-expanded, pero al abrirlo pasando el raton
+    quien cambia es el submenu, al que el JS le quita el atributo `inert`. Sin
+    el segundo selector la flecha se quedaba quieta en el caso mas habitual.
+
+    Se excluyen los elementos del panel de desbordamiento ([slot='overflow']),
+    donde el submenu se abre hacia la derecha y la flecha debe girar -90 grados
+    en lugar de 180. Ese caso lo resuelve mas abajo su propia regla, que tiene
+    menos especificidad que esta y quedaria anulada sin el :not().
+  */
+  .menu-list__disclosure[aria-expanded='true'] .menu-list__disclosure-icon,
+  .menu-list__list-item:not([slot='overflow']):has(.menu-list__submenu:not([inert]))
+    .menu-list__disclosure-icon {
     transform: rotate(180deg);
   }
 
