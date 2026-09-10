@@ -11,6 +11,7 @@
   "names": {
     "vicamar_guia_medidas": "Guía de medidas",
     "vicamar_confianza_envios": "Confianza y envíos",
+    "vicamar_preferencias_cookies": "Preferencias de cookies",
     "404": "404",
     "colors": "Paleta de colores",
     "custom_section": "Sección personalizada",
@@ -1115,6 +1116,7 @@
   "info": {
     "vicamar_tipo_tabla": "Con «Automática» la tabla se elige según el tipo de producto. El metafield de producto custom.guia_medidas, si existe, tiene prioridad sobre la tabla.",
     "vicamar_confianza_provisional": "Los plazos e importes por defecto son provisionales: actualízalos cuando el cliente confirme transportista, tarifas y umbral de envío gratuito.",
+    "vicamar_preferencias_cookies": "Muestra un botón para volver a abrir el banner de cookies de Shopify. Solo aparece en la tienda si el banner está activado en Configuración → Privacidad del cliente; en el editor se ve siempre.",
     "carousel_layout_on_mobile": "En dispositivos móviles siempre se usa el carrusel",
     "video_alt_text": "Describe el vídeo para personas usuarias de tecnologías de asistencia",
     "video_autoplay": "Los vídeos estarán silenciados de forma predeterminada",

@@ -373,6 +373,9 @@
     }
   },
   "vicamar": {
+    "cookies": {
+      "configurar": "Cookie settings"
+    },
     "guia_medidas": {
       "titulo": "Size guide",
       "abrir": "Size guide",

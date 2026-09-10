@@ -1,0 +1,100 @@
+{%- doc -%}
+  Boton "Configurar cookies" para reabrir el banner de consentimiento nativo de
+  Shopify (Configuracion -> Privacidad del cliente).
+
+  El RGPD exige que retirar el consentimiento sea tan facil como darlo, asi que
+  el visitante tiene que poder volver a abrir las preferencias en cualquier
+  momento, no solo en la primera visita.
+
+  El banner lo inyecta Shopify, no el tema, y expone
+  `window.privacyBanner.showPreferences()`. Como su script puede cargar despues
+  que el tema, el boton nace oculto y solo se muestra cuando esa funcion existe.
+  Si el banner esta desactivado en la tienda, el boton no llega a aparecer y no
+  queda un enlace muerto. En el editor de temas se muestra siempre, para que se
+  pueda ver y colocar aunque alli no se cargue el banner.
+{%- enddoc -%}
+
+<preferencias-cookies
+  class="preferencias-cookies"
+  {% unless request.design_mode %}
+    hidden
+  {% endunless %}
+  {{ block.shopify_attributes }}
+>
+  <button
+    type="button"
+    class="preferencias-cookies__boton button-unstyled {{ block.settings.link_preset }}"
+  >
+    {{- 'vicamar.cookies.configurar' | t -}}
+  </button>
+</preferencias-cookies>
+
+{% javascript %}
+  if (!customElements.get('preferencias-cookies')) {
+    class PreferenciasCookies extends HTMLElement {
+      #intentos = 0;
+
+      connectedCallback() {
+        this.querySelector('button')?.addEventListener('click', () => {
+          window.privacyBanner?.showPreferences?.();
+        });
+        this.#comprobarBanner();
+      }
+
+      // El script del banner lo carga Shopify por su cuenta y puede llegar
+      // despues que el tema: se reintenta durante unos segundos antes de rendirse.
+      #comprobarBanner() {
+        if (typeof window.privacyBanner?.showPreferences === 'function') {
+          this.hidden = false;
+          return;
+        }
+        this.#intentos += 1;
+        if (this.#intentos <= 20) setTimeout(() => this.#comprobarBanner(), 250);
+      }
+    }
+
+    customElements.define('preferencias-cookies', PreferenciasCookies);
+  }
+{% endjavascript %}
+
+{% stylesheet %}
+  .preferencias-cookies__boton {
+    color: inherit;
+    text-align: start;
+    cursor: pointer;
+  }
+
+  .preferencias-cookies__boton:hover {
+    text-decoration: underline;
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "t:names.vicamar_preferencias_cookies",
+  "tag": null,
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "t:info.vicamar_preferencias_cookies"
+    },
+    {
+      "type": "select",
+      "id": "link_preset",
+      "label": "t:settings.link_preset",
+      "options": [
+        { "value": "", "label": "t:options.default" },
+        { "value": "paragraph", "label": "t:options.paragraph" },
+        { "value": "h6", "label": "t:options.h6" },
+        { "value": "h5", "label": "t:options.h5" }
+      ],
+      "default": "paragraph"
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:names.vicamar_preferencias_cookies"
+    }
+  ]
+}
+{% endschema %}

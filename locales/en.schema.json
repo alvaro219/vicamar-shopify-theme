@@ -229,6 +229,7 @@
   "info": {
     "vicamar_tipo_tabla": "With \"Automatic\" the chart is picked from the product type. The custom.guia_medidas product metafield, when present, takes precedence over the chart.",
     "vicamar_confianza_provisional": "The default delivery times and amounts are provisional: update them once the client confirms the carrier, rates and free shipping threshold.",
+    "vicamar_preferencias_cookies": "Shows a button to reopen the Shopify cookie banner. It only appears on the storefront if the banner is enabled in Settings → Customer privacy; in the editor it is always visible.",
     "actions_display_style": "Icons are always used on mobile",
     "applies_on_image_only": "Applies to images only",
     "aspect_ratio_adjusted": "Adjusted in some layouts",
@@ -260,6 +261,7 @@
   "names": {
     "vicamar_guia_medidas": "Size guide",
     "vicamar_confianza_envios": "Trust and shipping",
+    "vicamar_preferencias_cookies": "Cookie preferences",
     "column": "Column",
     "product_title": "Product title",
     "custom_liquid": "Custom Liquid",
