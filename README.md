@@ -162,6 +162,23 @@ transferencia.
 estructura completa del menú, las once colecciones automáticas con sus
 condiciones y órdenes, y el orden de trabajo para montarlo todo.
 
+## Pie de página y textos legales
+
+El pie (`sections/footer-group.json`) tiene tres columnas: newsletter,
+**Información** (menú `footer`: Sobre nosotros, Contacto) y **Legal** (menú
+`legal` más el botón «Configurar cookies»). Los textos legales se pegan en las
+políticas nativas de Shopify y en dos páginas; los menús y los textos son datos
+del Admin, no código.
+
+El botón «Configurar cookies» (`blocks/preferencias-cookies.liquid`) reabre el
+banner de consentimiento nativo de Shopify, como exige el RGPD, y solo aparece
+en la tienda cuando ese banner está activado.
+
+[`docs/legal/`](docs/legal/) contiene los **borradores** de aviso legal,
+condiciones de venta, devoluciones y desistimiento, privacidad, cookies y
+envíos, más la guía de montaje. Ninguno está listo para publicar: faltan los
+datos del cliente y la revisión del gestor.
+
 ## Notas de mantenimiento
 
 **`config/settings_data.json`** guarda toda la configuración que se hace desde
