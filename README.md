@@ -241,6 +241,32 @@ condiciones de venta, devoluciones y desistimiento, privacidad, cookies y
 envíos, más la guía de montaje. Ninguno está listo para publicar: faltan los
 datos del cliente y la revisión del gestor.
 
+## Tests E2E
+
+[`e2e/`](e2e/) contiene tests de Playwright con dos proyectos: **`movil`**
+(Pixel 7), que va primero porque es de donde llega la mayoría del tráfico, y
+`escritorio`. Cubren portada, navegación (cajón móvil y mega menú), listado de
+colección, elección de variante y carrito, llegada al checkout e idioma.
+
+En local, con `shopify theme dev` en marcha:
+
+```bash
+cd e2e
+npm ci
+npx playwright install chromium   # solo la primera vez
+npm test                          # o: npx playwright test --project=movil
+```
+
+En CI se ejecutan tras cada despliegue a `staging`, contra el tema de staging de
+la dev store. Necesitan el secreto **`SHOPIFY_STORE_PASSWORD`** con la
+contraseña de la tienda (*Tienda online → Preferencias*); sin él, el job se
+salta con un aviso. Si fallan, el informe HTML queda como artefacto del
+workflow.
+
+> El test de checkout solo comprueba que **carga** el checkout de Shopify. No
+> completa el pago: requiere activar la pasarela de pruebas y puede toparse con
+> la protección antibots del checkout.
+
 ## Notas de mantenimiento
 
 **`config/settings_data.json`** guarda toda la configuración que se hace desde

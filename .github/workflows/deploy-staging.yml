@@ -67,3 +67,71 @@ jobs:
         # aparece dentro del JSON, en theme.errors. Sin esta comprobacion, un
         # despliegue a medias se veria en verde.
         run: node .github/scripts/verificar-push.js push.log
+
+  # Tests E2E contra el tema recien desplegado. Van como segundo job de este
+  # workflow, y no en uno aparte disparado con workflow_run, porque ese
+  # disparador solo funciona si el workflow esta en la rama por defecto.
+  #
+  # Secreto necesario: SHOPIFY_STORE_PASSWORD, la contraseña de la dev store
+  # (Tienda online -> Preferencias). Si falta, el job se salta con un aviso en
+  # lugar de marcar el despliegue en rojo.
+  e2e:
+    name: Tests E2E contra staging
+    needs: deploy
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: e2e
+    steps:
+      - name: Descargar el repositorio
+        uses: actions/checkout@v4
+
+      - name: Comprobar si los tests E2E estan configurados
+        id: guard
+        env:
+          STORE_PASSWORD: ${{ secrets.SHOPIFY_STORE_PASSWORD }}
+        run: |
+          if [ -z "$STORE_PASSWORD" ]; then
+            echo "::notice::Falta el secreto SHOPIFY_STORE_PASSWORD; no se ejecutan los tests E2E."
+            echo "listo=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "listo=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Leer tienda y tema de staging del shopify.theme.toml
+        if: steps.guard.outputs.listo == 'true'
+        working-directory: .
+        run: |
+          bloque=$(grep -A3 '^\[environments\.staging\]' shopify.theme.toml)
+          tienda=$(echo "$bloque" | grep -oP 'store = "\K[^"]+')
+          tema=$(echo "$bloque" | grep -oP 'theme = "\K[^"]+')
+          echo "BASE_URL=https://$tienda" >> "$GITHUB_ENV"
+          echo "PREVIEW_THEME_ID=$tema" >> "$GITHUB_ENV"
+
+      - name: Preparar Node.js
+        if: steps.guard.outputs.listo == 'true'
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: e2e/package-lock.json
+
+      - name: Instalar dependencias y Chromium
+        if: steps.guard.outputs.listo == 'true'
+        run: |
+          npm ci
+          npx playwright install --with-deps chromium
+
+      - name: Ejecutar tests (movil y escritorio)
+        if: steps.guard.outputs.listo == 'true'
+        env:
+          STORE_PASSWORD: ${{ secrets.SHOPIFY_STORE_PASSWORD }}
+        run: npx playwright test
+
+      - name: Guardar informe si fallan
+        if: failure() && steps.guard.outputs.listo == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: informe-playwright
+          path: e2e/playwright-report/
+          retention-days: 14
