@@ -373,6 +373,9 @@
     }
   },
   "vicamar": {
+    "tamanos": {
+      "etiqueta_accesible": "Available sizes:"
+    },
     "cookies": {
       "configurar": "Cookie settings"
     },

@@ -134,7 +134,7 @@
             "card-gallery": {
               "type": "_product-card-gallery",
               "settings": {
-                "image_ratio": "adapt",
+                "image_ratio": "portrait",
                 "border": "none",
                 "border_width": 1,
                 "border_opacity": 100,
@@ -190,12 +190,27 @@
                 "padding-inline-end": 0
               },
               "blocks": {}
+            },
+            "swatches_color": {
+              "type": "swatches",
+              "settings": {},
+              "blocks": {}
+            },
+            "tamanos_disponibles": {
+              "type": "tamanos-disponibles",
+              "settings": {
+                "nombres_opcion": "Tamaño, Medida",
+                "type_preset": "paragraph"
+              },
+              "blocks": {}
             }
           },
           "block_order": [
             "card-gallery",
+            "swatches_color",
             "product_title_4nY4eT",
-            "price_EzJzMm"
+            "price_EzJzMm",
+            "tamanos_disponibles"
           ]
         }
       },
@@ -211,7 +226,9 @@
         "padding-inline-end": 0,
         "background_color": "{{ settings.color_palette.background }}",
         "padding-block-start": 0,
-        "padding-block-end": 32
+        "padding-block-end": 32,
+        "products_per_page": 24,
+        "enable_infinite_scroll": true
       }
     }
   },

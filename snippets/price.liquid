@@ -89,7 +89,26 @@
     </span>
   {% else %}
     {% comment %} Standard pricing display: render only the active branch (regular or sale) {% endcomment %}
-    {% if show_compare_price %}
+    {%- comment -%}
+      VICAMAR: en las tarjetas de producto (colecciones, busqueda, portada) Horizon
+      mostraba el precio de la primera variante disponible, sin indicar que habia
+      otros precios. En textil de hogar el precio sube con el tamaño de cama, asi
+      que una tarjeta de "54,95 €" cuya medida de 180 cm cuesta 74,95 € llevaba a
+      engaño; y si se agotaba la medida mas barata, la tarjeta cambiaba de precio
+      sin avisar.
+
+      Cuando el precio varia entre variantes se muestra "Desde" con el minimo real
+      del producto, igual que ya hace el bloque de producto destacado. En la ficha
+      de producto (is_product_card = false) no cambia nada: alli el precio es el
+      de la variante seleccionada.
+
+      Se sustituye el marcador despues de traducir para no escapar el HTML que
+      pueda llevar el formato de moneda de la tienda.
+    {%- endcomment -%}
+    {% if is_product_card and product_resource.price_varies %}
+      {%- assign precio_desde = 'content.price_from' | t: price: '__PRICE__' | replace: '__PRICE__', price_min -%}
+      <span class="price">{{ precio_desde }}</span>
+    {% elsif show_compare_price %}
       {% if show_sale_price_first %}
         <span class="price-item__group price">
           <span class="visually-hidden">{{ 'content.price_sale' | t }}&nbsp;</span>

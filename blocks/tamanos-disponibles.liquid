@@ -1,0 +1,110 @@
+{%- doc -%}
+  Linea con los tamaños disponibles de un producto, pensada para la tarjeta de
+  producto de los listados: "90 · 105 · 135 · 150 · 180 cm".
+
+  En textil de hogar el cliente compra por tamaño de cama. Ver de un vistazo
+  que un juego de sabanas existe en la medida de su cama le evita entrar en
+  fichas que no le sirven, lo que en movil ahorra muchos toques.
+
+  Busca la opcion de variante cuyo nombre coincida con alguno de los del ajuste
+  (por defecto "Tamaño" y "Medida") y lista solo los valores que tienen al
+  menos una variante disponible. Si todos los valores acaban en " cm", se quita
+  la unidad de cada uno y se pone una sola vez al final, para que quepa en una
+  tarjeta de movil. Si el producto no tiene esa opcion, o solo tiene un valor,
+  el bloque no pinta nada.
+{%- enddoc -%}
+
+{%- liquid
+  assign producto = closest.product
+  assign nombres_buscados = block.settings.nombres_opcion | split: ','
+
+  assign opcion_tamano = nil
+  for opcion in producto.options_with_values
+    for nombre in nombres_buscados
+      assign nombre_limpio = nombre | strip | downcase
+      assign nombre_opcion = opcion.name | strip | downcase
+      if nombre_limpio != blank and nombre_limpio == nombre_opcion
+        assign opcion_tamano = opcion
+        break
+      endif
+    endfor
+    if opcion_tamano
+      break
+    endif
+  endfor
+
+  assign valores = ''
+  assign total = 0
+  assign todos_en_cm = true
+  if opcion_tamano
+    for valor in opcion_tamano.values
+      if valor.available
+        assign texto = valor.name | strip
+        unless texto contains ' cm'
+          assign todos_en_cm = false
+        endunless
+        assign valores = valores | append: texto | append: '|'
+        assign total = total | plus: 1
+      endif
+    endfor
+  endif
+-%}
+
+{%- if total > 1 -%}
+  {%- liquid
+    assign lista = valores | split: '|'
+    if todos_en_cm
+      assign linea = lista | join: ' · ' | remove: ' cm' | append: ' cm'
+    else
+      assign linea = lista | join: ' · '
+    endif
+  -%}
+  <p
+    class="tamanos-disponibles {{ block.settings.type_preset }}"
+    {{ block.shopify_attributes }}
+  >
+    <span class="visually-hidden">{{ 'vicamar.tamanos.etiqueta_accesible' | t }}</span>
+    {{ linea }}
+  </p>
+{%- endif -%}
+
+{% stylesheet %}
+  .tamanos-disponibles {
+    margin: 0;
+    font-size: 0.8125em;
+    line-height: 1.35;
+    color: rgb(var(--color-foreground-rgb) / 0.7);
+    overflow-wrap: anywhere;
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "t:names.vicamar_tamanos_disponibles",
+  "tag": null,
+  "settings": [
+    {
+      "type": "text",
+      "id": "nombres_opcion",
+      "label": "t:settings.vicamar_nombres_opcion",
+      "info": "t:info.vicamar_nombres_opcion",
+      "default": "Tamaño, Medida"
+    },
+    {
+      "type": "select",
+      "id": "type_preset",
+      "label": "t:settings.preset",
+      "options": [
+        { "value": "", "label": "t:options.default" },
+        { "value": "paragraph", "label": "t:options.paragraph" }
+      ],
+      "default": "paragraph"
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:names.vicamar_tamanos_disponibles"
+    }
+  ]
+}
+{% endschema %}
