@@ -14,20 +14,43 @@
     "header_announcements_9jGBFp": {
       "type": "header-announcements",
       "blocks": {
-        "announcement_BxgCk9": {
+        "anuncio_envio": {
           "type": "_announcement",
           "settings": {
-            "text": "Bienvenido a nuestra tienda",
             "font": "var(--font-subheading--family)",
             "font_size": "0.75rem",
             "letter_spacing": "normal",
-            "case": "none"
-          },
-          "blocks": {}
+            "case": "none",
+            "text": "Envío gratis desde 49 €",
+            "link": "shopify://policies/shipping-policy"
+          }
+        },
+        "anuncio_devoluciones": {
+          "type": "_announcement",
+          "settings": {
+            "font": "var(--font-subheading--family)",
+            "font_size": "0.75rem",
+            "letter_spacing": "normal",
+            "case": "none",
+            "text": "Devoluciones en 14 días",
+            "link": "shopify://policies/refund-policy"
+          }
+        },
+        "anuncio_pago": {
+          "type": "_announcement",
+          "settings": {
+            "font": "var(--font-subheading--family)",
+            "font_size": "0.75rem",
+            "letter_spacing": "normal",
+            "case": "none",
+            "text": "Paga con tarjeta o Bizum"
+          }
         }
       },
       "block_order": [
-        "announcement_BxgCk9"
+        "anuncio_envio",
+        "anuncio_devoluciones",
+        "anuncio_pago"
       ],
       "name": "t:names.announcement_bar",
       "settings": {

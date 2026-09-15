@@ -187,6 +187,32 @@ que el bloque admite menos de cuatro.
 > **provisionales**. Hay que sustituirlos en cuanto el cliente confirme
 > transportista, tarifas y umbral de envío gratuito.
 
+## Portada y barra de anuncios
+
+Diseñadas **primero para móvil**, que es de donde llegará la mayoría del
+tráfico. `templates/index.json`, de arriba abajo:
+
+1. **Portada** (`hero`) con imagen propia para móvil activada: una panorámica
+   de escritorio recortada en vertical pierde el motivo. Tamaños recomendados:
+   2880 × 1280 px en escritorio y 1080 × 1350 px en móvil.
+2. **Compra por categoría**: las seis colecciones del menú. En móvil es un
+   carrusel deslizable; en escritorio, rejilla de tres.
+3. **Más vendidos** y 4. **Novedades**: listas de productos de esas
+   colecciones, en carrusel en móvil, con las mismas tarjetas que el listado
+   (4:5, «Desde», tamaños disponibles).
+5. **Franja de confianza**: el mismo bloque `confianza-envios` de la ficha de
+   producto, para que plazos e importes sean idénticos en toda la tienda.
+
+La **barra de anuncios** (`sections/header-group.json`) rota tres mensajes de
+menos de 25 caracteres, para que quepan en una línea de móvil: envío gratis,
+devoluciones en 14 días y pago con tarjeta o Bizum.
+
+> Textos, imágenes e importes de portada y barra son **provisionales**. El
+> umbral de envío gratis (49 €) aparece en tres sitios —barra de anuncios,
+> bloque de confianza y política de envíos— y hay que cambiarlo en los tres
+> cuando el cliente lo confirme. Todo el contenido de portada y barra es
+> castellano: la versión inglesa se traduce con *Translate & Adapt*.
+
 ## Navegación y colecciones
 
 El menú de la tienda y las colecciones que lo alimentan son **datos de Shopify,
