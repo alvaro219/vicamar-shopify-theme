@@ -63,11 +63,47 @@ shopify theme push --environment staging
 La dev store está protegida por contraseña, así que `theme dev` la pedirá la
 primera vez.
 
-## Ramas y despliegue
+## Ramas, Pull Requests y despliegue
 
 - `staging` → despliega automáticamente al tema de staging de la dev store.
 - `main` → desplegará a la tienda de producción del cliente (aún inactivo).
-- Cada Pull Request a cualquiera de las dos ejecuta `theme check`.
+- **No se sube nada directamente a `staging` ni a `main`**: todo entra por
+  Pull Request, y cada PR ejecuta `theme check` antes de poder fusionarse.
+
+Flujo de trabajo:
+
+```bash
+git checkout staging && git pull
+git checkout -b feature/descripcion-corta   # o fix/…, docs/…
+# … cambios, commits …
+git push -u origin feature/descripcion-corta
+```
+
+1. Abrir un PR de la rama hacia **`staging`**. GitHub rellena la descripción
+   con la plantilla de `.github/pull_request_template.md`.
+2. Esperar a que pase *Analisis estatico del tema* (`theme check`).
+3. Fusionar con **«Create a merge commit»**. Al entrar en `staging`, el tema se
+   despliega solo a la dev store.
+4. Cuando `staging` esté validado, PR de **`staging` → `main`**. Mientras la
+   tienda no se transfiera, fusionar en `main` no despliega nada.
+
+> Se usa *merge commit* y no *squash* porque a veces hay varias ramas
+> encadenadas, cada una creada a partir de la anterior. Con merge commit se
+> fusionan en orden sin conflictos; con squash, la segunda rama volvería a
+> traer los commits de la primera con otro hash y chocaría.
+
+### Protección de ramas
+
+Se configura una vez en GitHub, en *Settings → Rules → Rulesets → New branch
+ruleset*, aplicado a `main` y `staging`:
+
+- **Restrict deletions** y **Block force pushes**.
+- **Require a pull request before merging** (sin aprobaciones obligatorias
+  mientras haya un solo desarrollador).
+- **Require status checks to pass** → añadir `Analisis estatico del tema` (escrito así, sin tildes: es el nombre exacto del job).
+
+Y en *Settings → General → Pull Requests*: dejar activo **Allow merge
+commits**.
 
 ### Secretos necesarios
 
