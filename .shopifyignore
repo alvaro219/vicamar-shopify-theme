@@ -6,3 +6,4 @@ dev/*
 README.md
 .gitattributes
 docs/*
+e2e/*

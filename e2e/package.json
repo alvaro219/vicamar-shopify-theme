@@ -1,0 +1,14 @@
+{
+  "name": "vicamar-e2e",
+  "private": true,
+  "description": "Tests E2E del tema Shopify de Vicamar (Playwright). Móvil primero.",
+  "scripts": {
+    "test": "playwright test",
+    "test:movil": "playwright test --project=movil",
+    "test:escritorio": "playwright test --project=escritorio",
+    "informe": "playwright show-report"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.63.0"
+  }
+}
