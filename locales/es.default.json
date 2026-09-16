@@ -361,6 +361,9 @@
     }
   },
   "vicamar": {
+    "tamanos": {
+      "etiqueta_accesible": "Tamaños disponibles:"
+    },
     "cookies": {
       "configurar": "Configurar cookies"
     },

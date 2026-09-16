@@ -141,3 +141,36 @@ años de oficio, de dónde vienen los tejidos y dónde se fabrica.
 4. Montar el menú del apartado 3, **sin** `Invierno` ni `Edredones`.
 5. Comprobar en `shopify theme dev` que el mega menú abre bien en escritorio y
    que el cajón lateral de móvil navega los tres niveles.
+
+## 6. Filtros de los listados
+
+El tema ya pinta los filtros: en móvil van en un cajón lateral con el botón
+«Filtro» sobre la rejilla, y en escritorio en una barra horizontal. **Qué
+filtros aparecen** no se decide en el tema sino en la app gratuita de Shopify
+**Search & Discovery** (*Apps → Search & Discovery → Filtros*).
+
+De serie la tienda solo muestra *Disponibilidad* y *Precio*. Hay que añadir, en
+este orden:
+
+1. **Opción de variante → Tamaño** — el filtro principal: el cliente busca la
+   medida de su cama.
+2. **Opción de variante → Color**.
+3. **Opción de variante → Medida** — solo tiene valores en Toallas; Shopify
+   oculta cada filtro en las colecciones donde no hay productos con esa opción.
+4. **Precio** y **Disponibilidad**, que ya existen: dejarlos al final.
+
+Quitar *Proveedor* y *Tipo de producto* si aparecen: todos los productos son de
+Vicamar y el tipo ya lo resuelve el menú.
+
+> Los filtros de opción agrupan por **nombre exacto de la opción y de sus
+> valores**. `Tamaño` y `Tamano`, o `150 cm` y `150cm`, serían filtros o valores
+> distintos. Al cargar el catálogo real hay que mantener exactamente los mismos
+> nombres en todos los productos.
+
+### Muestras de color
+
+La tarjeta de producto lleva ya colocado el bloque de muestras, pero **no pinta
+nada hasta que los colores tengan muestra asignada**. Se configura por producto
+en el Admin: asignar la *Categoría* de Shopify al producto y enlazar su opción
+*Color* con el metacampo de categoría *Color*, donde cada valor lleva su color
+o imagen. Es opcional; sin ello la tarjeta simplemente no muestra muestras.
