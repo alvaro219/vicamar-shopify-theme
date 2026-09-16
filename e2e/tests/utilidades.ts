@@ -11,13 +11,6 @@ export async function leerCarrito(pagina: Page) {
   });
 }
 
-/** Vacía el carrito para que cada test parta de cero. */
-export async function vaciarCarrito(pagina: Page) {
-  await pagina.evaluate(() =>
-    fetch('/cart/clear.js', { method: 'POST', headers: { Accept: 'application/json' } }),
-  );
-}
-
 /**
  * Comprueba que la página no muestra errores de Liquid. Shopify los pinta como
  * texto dentro de la propia página en lugar de fallar, así que un error en una

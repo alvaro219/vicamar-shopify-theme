@@ -263,6 +263,13 @@ contraseña de la tienda (*Tienda online → Preferencias*); sin él, el job se
 salta con un aviso. Si fallan, el informe HTML queda como artefacto del
 workflow.
 
+> **En CI se saltan los dos tests que usan el carrito** (añadir una variante e ir
+> al checkout). La tienda real protege carrito y checkout con una verificación
+> antibots de Cloudflare, que salta con el tráfico automatizado desde GitHub
+> Actions. Esos dos tests se ejecutan en local contra `theme dev`, donde no hay
+> protección: conviene lanzarlos antes de fusionar cualquier cambio que toque la
+> ficha de producto o el carrito.
+
 > El test de checkout solo comprueba que **carga** el checkout de Shopify. No
 > completa el pago: requiere activar la pasarela de pruebas y puede toparse con
 > la protección antibots del checkout.
