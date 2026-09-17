@@ -18,8 +18,8 @@ cliente puede acceder solicitándolo por correo electrónico.
 ## 2. Ámbito
 
 Las ventas se dirigen a consumidores y empresas con dirección de entrega en
-España: península, Illes Balears, Canarias, Ceuta y Melilla. [Confirmar con el
-cliente si se aceptan otros destinos.]
+España peninsular y en las Illes Balears. No se realizan envíos a Canarias,
+Ceuta ni Melilla.
 
 ## 3. Productos y precios
 
@@ -27,10 +27,8 @@ Las características esenciales de cada producto figuran en su ficha. Las
 fotografías son orientativas; el color puede variar ligeramente según la
 pantalla.
 
-Los precios se muestran en euros e **incluyen el IVA** aplicable. En los
-envíos a Canarias, Ceuta y Melilla [indicar el tratamiento fiscal:
-exención de IVA, IGIC/IPSI y posibles gastos de despacho de aduanas — revisar
-con el gestor]. Los gastos de envío se indican antes de finalizar el pedido,
+Los precios se muestran en euros e **incluyen el IVA** aplicable. Los gastos
+de envío se indican antes de finalizar el pedido,
 en la [Política de envíos](/policies/shipping-policy).
 
 ## 4. Proceso de compra
