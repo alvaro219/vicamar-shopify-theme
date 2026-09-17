@@ -6,8 +6,8 @@
 > sustituye porque aquella no recoge los apartados que exigen el RGPD y la
 > LOPDGDD para una tienda española. Ver [README](README.md).
 >
-> Las apps de reseñas y email marketing todavía no están elegidas: cuando se
-> decidan, hay que añadirlas en el apartado 5.
+> Email marketing: Klaviyo. Reseñas: sin app por ahora; si se instala una,
+> hay que añadirla en el apartado 5.
 
 ## 1. Responsable del tratamiento
 
@@ -60,10 +60,8 @@ tratamiento:
 
 - **Shopify** (plataforma de la tienda y pagos con tarjeta).
 - **Proveedor de Bizum** [indicar entidad].
-- **Empresa de transporte** [indicar transportista], solo los datos de entrega.
-- **Plataforma de email marketing** [pendiente de elegir: Shopify Email o
-  Klaviyo].
-- **App de reseñas** [pendiente de elegir].
+- **CTT Express** (transporte), solo los datos necesarios para la entrega.
+- **Klaviyo** (envío de la newsletter y de correos de carrito abandonado).
 - **Meta Platforms** y **TikTok**, solo si aceptas las cookies de marketing.
 
 ## 6. Transferencias internacionales

@@ -183,9 +183,9 @@ icono bajo el botón de compra: plazo de entrega, umbral de envío gratuito,
 plazo de devolución y medios de pago. Cada línea sin título no se pinta, así
 que el bloque admite menos de cuatro.
 
-> Los plazos e importes por defecto (24-48 h, envío gratis desde 49 €) son
-> **provisionales**. Hay que sustituirlos en cuanto el cliente confirme
-> transportista, tarifas y umbral de envío gratuito.
+> Plazos e importes confirmados por el cliente: CTT Express, 24-48 h, envío
+> gratis desde 20 €. Si cambian, hay que actualizarlos también en la barra de
+> anuncios y en la política de envíos.
 
 ## Portada y barra de anuncios
 
@@ -207,10 +207,10 @@ La **barra de anuncios** (`sections/header-group.json`) rota tres mensajes de
 menos de 25 caracteres, para que quepan en una línea de móvil: envío gratis,
 devoluciones en 14 días y pago con tarjeta o Bizum.
 
-> Textos, imágenes e importes de portada y barra son **provisionales**. El
-> umbral de envío gratis (49 €) aparece en tres sitios —barra de anuncios,
-> bloque de confianza y política de envíos— y hay que cambiarlo en los tres
-> cuando el cliente lo confirme. Todo el contenido de portada y barra es
+> Textos e imágenes de portada son **provisionales**. El umbral de envío
+> gratis (20 €) aparece en tres sitios —barra de anuncios,
+> bloque de confianza y política de envíos— y si cambia hay que actualizarlo en
+> los tres. Todo el contenido de portada y barra es
 > castellano: la versión inglesa se traduce con *Translate & Adapt*.
 
 ## Navegación y colecciones

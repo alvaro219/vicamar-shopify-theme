@@ -1,26 +1,26 @@
 # Política de envíos
 
-> **ESQUELETO — no publicar hasta que el cliente confirme transportista,
-> tarifas y umbral de envío gratuito.** Destino en Shopify: *Configuración →
+> **BORRADOR — pendiente de confirmar los envíos a Canarias, Ceuta y Melilla,
+> el plazo a Baleares y a qué zonas aplica el envío gratuito.** Destino en Shopify: *Configuración →
 > Políticas → Política de envío*. Ver [README](README.md).
 >
 > Los importes deben coincidir exactamente con las tarifas configuradas en
 > *Configuración → Envío y entrega* y con el bloque «Confianza y envíos» de la
-> ficha de producto, que ahora muestra valores provisionales (24-48 h, envío
-> gratis desde 49 €).
+> ficha de producto (24-48 h, envío gratis desde 20 €).
 
 ## 1. Zonas de envío
 
-Enviamos a todo el territorio español:
+Enviamos a la península y a las Illes Balears [CONFIRMAR si también a Canarias,
+Ceuta y Melilla]:
 
 | Zona | Plazo orientativo | Coste |
 | --- | --- | --- |
-| Península | [PLAZO] días laborables | [PRECIO] € |
-| Illes Balears | [PLAZO] días laborables | [PRECIO] € |
-| Canarias, Ceuta y Melilla | [PLAZO] días laborables | [PRECIO] € |
+| Península | 24-48 horas laborables | 3,90 € |
+| Illes Balears | [CONFIRMAR: 24-48 h o más] | 6,90 € |
+| Canarias, Ceuta y Melilla | [CONFIRMAR si se envía] | [CONFIRMAR] |
 
-[Si hay envío gratuito:] Los pedidos a partir de [IMPORTE] € tienen envío
-gratuito a [indicar zonas].
+Los pedidos a partir de **20 €** tienen envío gratuito a [CONFIRMAR: península,
+o península y Baleares].
 
 Los plazos empiezan a contar desde la confirmación del pedido y no incluyen
 fines de semana ni festivos.
@@ -34,7 +34,7 @@ conocerlo antes de pagar.]
 ## 3. Seguimiento
 
 Cuando el pedido salga del almacén recibirás un correo con el número de
-seguimiento de [TRANSPORTISTA].
+seguimiento de CTT Express.
 
 ## 4. Incidencias en la entrega
 

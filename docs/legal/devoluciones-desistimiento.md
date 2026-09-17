@@ -5,8 +5,9 @@
 > menú legal se enlaza con la etiqueta «Devoluciones y desistimiento». Ver
 > [README](README.md).
 >
-> Decisiones pendientes del cliente, marcadas en el texto: quién paga el envío
-> de la devolución y si se excluyen productos por motivos de higiene.
+> Decisiones del cliente ya incorporadas: el cliente paga el envío de las
+> devoluciones por desistimiento, y se excluyen los productos precintados por
+> higiene. Falta concretar **qué productos** se entregan precintados.
 
 ## 1. Plazo
 
@@ -33,10 +34,9 @@ devolución.
 Debes enviarnos el producto en un plazo máximo de 14 días naturales desde que
 nos comunicas el desistimiento, a [DIRECCIÓN DE DEVOLUCIONES].
 
-[DECISIÓN DEL CLIENTE — elegir una opción y borrar la otra:]
-
-- *Opción A:* los gastos directos de la devolución corren a tu cargo.
-- *Opción B:* la devolución es gratuita; te facilitaremos una etiqueta de envío.
+Los gastos directos de la devolución corren a tu cargo. Si el producto llega
+defectuoso o no corresponde con tu pedido, los gastos son nuestros: ver el
+apartado 6.
 
 Solo respondes de la disminución de valor del producto que resulte de una
 manipulación distinta a la necesaria para comprobar su naturaleza,
@@ -56,8 +56,8 @@ medio de pago que utilizaste, sin ningún coste para ti.
 
 ## 5. Excepciones
 
-[DECISIÓN DEL CLIENTE — revisar con el gestor.] El artículo 103 del Real
-Decreto Legislativo 1/2007 excluye del derecho de desistimiento, entre otros:
+Conforme al artículo 103 del Real Decreto Legislativo 1/2007, **no se admite
+el desistimiento** en:
 
 - los bienes precintados que no sean aptos para ser devueltos por razones de
   protección de la salud o de higiene y que hayan sido desprecintados tras la
@@ -65,10 +65,11 @@ Decreto Legislativo 1/2007 excluye del derecho de desistimiento, entre otros:
 - los bienes confeccionados conforme a las especificaciones del consumidor o
   claramente personalizados.
 
-Si se aplica alguna de estas excepciones —por ejemplo, a almohadas o rellenos
-entregados precintados—, debe indicarse aquí de forma expresa y también en la
-ficha de cada producto afectado. Si no se aplica ninguna, eliminar este
-apartado.
+En Vicamar esto afecta a los siguientes productos, que se entregan
+precintados: [CONFIRMAR LISTA, por ejemplo almohadas y rellenos]. Una vez
+abierto el precinto no pueden devolverse, salvo que estén defectuosos.
+[PENDIENTE: el tema debe avisarlo de forma visible en la ficha de cada uno de
+estos productos antes de publicar esta política.]
 
 ## 6. Productos defectuosos
 

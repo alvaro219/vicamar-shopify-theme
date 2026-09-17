@@ -1215,8 +1215,8 @@
   "text_defaults": {
     "vicamar_guia_medidas": "Size guide",
     "vicamar_envio_titulo": "Delivery in 24-48 h",
-    "vicamar_envio_texto": "Mainland Spain. Ask about delivery times for the Balearic and Canary Islands.",
-    "vicamar_envio_gratis_titulo": "Free shipping over €49",
+    "vicamar_envio_texto": "Mainland Spain and Balearic Islands, with CTT Express.",
+    "vicamar_envio_gratis_titulo": "Free shipping over €20",
     "vicamar_envio_gratis_texto": "On orders to mainland Spain.",
     "vicamar_devolucion_titulo": "14-day returns",
     "vicamar_devolucion_texto": "Right of withdrawal, no reason required.",
